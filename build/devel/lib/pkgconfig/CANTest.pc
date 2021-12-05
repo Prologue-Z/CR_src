@@ -1,0 +1,8 @@
+prefix=/home/zhangxu/catkin_ws/src/build/devel
+
+Name: CANTest
+Description: Description of CANTest
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
