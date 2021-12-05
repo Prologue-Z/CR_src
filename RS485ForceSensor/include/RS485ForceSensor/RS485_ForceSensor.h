@@ -14,17 +14,26 @@
 #include <list>
 
 namespace ForceSensor{
-    enum MSG_CMD{
-        MC_BaudRate = 0xA2,
-        MC_Range = 0xA3,
-        MC_Unit = 0xA5,
-        MC_Polarity = 0xA6,
-        MC_ZeroPoint = 0xA7,
-        MC_SingleOutput = 0xB1,
-    };
+    
+
 
     class RS485_ForceSensor{
         public:
+        enum MSG_CMD{
+            MC_BaudRate = 0xA2,
+            MC_Range = 0xA3,
+            MC_Unit = 0xA5,
+            MC_Polarity = 0xA6,
+            MC_ZeroPoint = 0xA7,
+            MC_SingleOutput = 0xB1,
+        };
+        enum SEND_FRAME_INDEX{
+            SFI_Head = 0,
+            SFI_Add = 3,
+            SFI_Cmd = 4,
+            SFI_Data = 5,
+            SFI_Check = 7,
+        };
 
 
         
