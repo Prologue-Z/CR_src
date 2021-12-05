@@ -1,0 +1,8 @@
+prefix=/home/zhangxu/catkin_ws/src/rs485forcesensor/build/devel
+
+Name: rs485forcesensor
+Description: Description of rs485forcesensor
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

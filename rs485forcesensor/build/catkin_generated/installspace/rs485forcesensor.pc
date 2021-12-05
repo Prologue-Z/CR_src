@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: rs485forcesensor
+Description: Description of rs485forcesensor
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

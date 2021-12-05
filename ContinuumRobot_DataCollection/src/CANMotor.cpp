@@ -20,7 +20,7 @@
 namespace CANMotor_NS {
 //public
 CANMotor::CANMotor(ros::NodeHandle nh)
-    :DeviceType(3),DeviceIndex(0),CANIndex(0){   
+    :DeviceType(3),DeviceIndex(0),CANIndex(0){
    ROS_INFO("[CANMotor] Node started.");
    DWORD dwRel;
    dwRel = OpCAN();
