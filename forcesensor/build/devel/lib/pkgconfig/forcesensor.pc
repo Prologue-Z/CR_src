@@ -1,0 +1,8 @@
+prefix=/home/zhangxu/catkin_ws/src/forcesensor/build/devel
+
+Name: forcesensor
+Description: Description of forcesensor
+Version: 0.0.0
+Cflags: -I/home/zhangxu/catkin_ws/src/forcesensor/include
+Libs: -L${prefix}/lib -lforcesensor
+Requires: roscpp std_msgs

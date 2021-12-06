@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/zhangxu/catkin_ws/src/forcesensor/build/devel/setup.sh
