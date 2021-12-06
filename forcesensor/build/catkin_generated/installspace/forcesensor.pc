@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: forcesensor
-Description: Description of forcesensor
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib -lforcesensor
-Requires: roscpp std_msgs

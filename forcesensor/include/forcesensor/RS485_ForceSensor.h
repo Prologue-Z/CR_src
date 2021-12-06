@@ -8,6 +8,9 @@
 * Transmitter model:ZNBSQ-TS3-485
 */
 
+#ifndef RS485_FORCESENSOR_H
+#define RS485_FORCESENSOR_H
+
 //Uart operator
 #include <forcesensor/RS485_UartOperator.h>
 
@@ -123,3 +126,5 @@ namespace ForceSensor_NS{
 
     };
 }
+
+#endif

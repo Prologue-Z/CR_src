@@ -8,15 +8,11 @@
 * Note:RS485 uart operator
 */
 
+
+#ifndef RS485_UARTOPERATOR_H
+#define RS485_UARTOPERATOR_H
+
 namespace UartOperator{
-    struct UART_SETPARA{
-        //reference-ttps://blog.csdn.net/weixin_43319854/article/details/109844860?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link
-        BAUD_RATE BaudRate;            
-        unsigned char DataBit; //8，7，6，5
-        unsigned char StopBit; // '1'  '1.5'   '2'
-        unsigned char CheckBit; // 0-None，1-Odd，2-Even,3-Space
-    };
-    
     enum BAUD_RATE{
         BR_1200,
         BR_2400,
@@ -33,6 +29,14 @@ namespace UartOperator{
         BR_921600,
         BR_BUTT,
     };
+    struct UART_SETPARA{
+        //reference-ttps://blog.csdn.net/weixin_43319854/article/details/109844860?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link
+        BAUD_RATE BaudRate;            
+        unsigned char DataBit; //8，7，6，5
+        unsigned char StopBit; // '1'  '1.5'   '2'
+        unsigned char CheckBit; // 0-None，1-Odd，2-Even,3-Space
+    };    
+    
 
     class RS485_UartOperator{
         public:
@@ -97,3 +101,5 @@ namespace UartOperator{
 
     };
 }
+
+#endif
