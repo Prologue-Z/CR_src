@@ -10,7 +10,7 @@
 
 #include <rs485/Function_Common.h>
 
-namespace CommonFunction{
+namespace NS_CommonFunction{
     void ShortToChar(unsigned short Short,unsigned char *byte){
         byte[0] = (Short >> 8) & 0xFF;
         byte[1] = Short & 0xFF;

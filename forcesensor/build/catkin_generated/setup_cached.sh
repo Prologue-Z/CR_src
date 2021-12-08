@@ -8,6 +8,8 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/zhangxu/catkin_ws/src/forcesensor/build/devel:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/home/zhangxu/catkin_ws/src/forcesensor/build/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/zhangxu/catkin_ws/src/forcesensor/build/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/zhangxu/catkin_ws/src/forcesensor/build'
 export ROSLISP_PACKAGE_DIRECTORIES='/home/zhangxu/catkin_ws/src/forcesensor/build/devel/share/common-lisp'
 export ROS_PACKAGE_PATH="/home/zhangxu/catkin_ws/src/forcesensor:$ROS_PACKAGE_PATH"

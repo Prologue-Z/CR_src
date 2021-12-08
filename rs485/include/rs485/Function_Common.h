@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2021 Key Laboratory of Mechanism Theory and Equipment Design of the Ministry of Education, School of Mechanical Engineering, Tianjin University, China
  */
 
-namespace CommonFunction{
+namespace NS_CommonFunction{
     void ShortToChar(unsigned short Short,unsigned char *byte);
 
     void CharToShort(unsigned short Short,unsigned char *byte);
