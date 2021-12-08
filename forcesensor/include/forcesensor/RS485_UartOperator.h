@@ -46,7 +46,7 @@ namespace UartOperator{
         */
         RS485_UartOperator(const struct UART_SETPARA *SetPara);
 
-        ~RS485_UartOperator();
+        //~RS485_UartOperator();
 
         /*!
         * SendData
@@ -68,8 +68,8 @@ namespace UartOperator{
         bool dataAvailable(int TimeOutMsec);
 
         private:
-        const char* UartName = "/dev/ttyCH341USB0"; // Uart name
-        int FD = 0;//File descriptor
+        const char *UartName = "/dev/ttyCH341USB0"; // Uart name
+        int FD = 3;//File descriptor
         
 
         /**
@@ -93,9 +93,7 @@ namespace UartOperator{
         int SetBaudRate(BAUD_RATE BR);
         int SetDataBit(unsigned char DataBit);//8，7，6，5
         int SetCheck(unsigned char CheckBit);// 0-None，1-Odd，2-Even,3-Space
-        int SetStopBit(unsigned char StopBit);// '1'  '1.5'   '2'
-
-
+        int SetStopBit(unsigned char StopBit);// 0-'1'  1-'1.5'   2-'2'
 
         
 

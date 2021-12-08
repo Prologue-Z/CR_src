@@ -21,7 +21,7 @@ using namespace UartOperator;
 namespace ForceSensor_NS{
     //public
     RS485_ForceSensor::RS485_ForceSensor()
-    :SetPara({(BAUD_RATE)3,8,'1',0}),Uart(&SetPara) {
+    :SetPara({(BAUD_RATE)3,8,0,0}),Uart(&SetPara) {
         SetBaudRate();
         SetRange();
         SetUnit();

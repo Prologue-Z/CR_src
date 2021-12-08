@@ -53,6 +53,8 @@ namespace ForceSensor_NS{
         * Set bautrate->Set range->Set unit->Set polarity->Set zero point
         */
         RS485_ForceSensor();
+
+        //~RS485_ForceSensor();
         
         double* GetForce();
 

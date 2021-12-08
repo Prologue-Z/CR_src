@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/opt/ros/melodic/include/**",
+        "/home/zhangxu/catkin_ws/src/CANTest/include/**",
+        "/home/zhangxu/catkin_ws/src/ContinuumRobot_DataCollection/include/**",
+        "/home/zhangxu/catkin_ws/src/forcesensor/include/**",
+        "/home/zhangxu/catkin_ws/src/ros_test1/include/**",
+        "/home/zhangxu/catkin_ws/src/serial_test/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

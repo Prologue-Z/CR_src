@@ -17,6 +17,7 @@
 
 //open
 #include <fcntl.h>
+#include <errno.h>
 
 //
 #include <termios.h>
@@ -126,9 +127,10 @@ namespace UartOperator{
 
     int RS485_UartOperator::OpenUart(){
         //Open uart O_RDWR-read&write   O_NOCTTY-can not controlled by the terminal
+	//extern int errno;
         FD = open(UartName,O_RDWR | O_NOCTTY);
         if(FD<0){
-            ROS_INFO("[RS485 Error]:Open dev %s fail! \n",UartName);
+            ROS_INFO("[RS485 Error]:Open dev %s fail! \n  FD = %d",UartName,FD);
             return -1;
         }
         ROS_INFO("[RS485]:Open dev %s success! \n",UartName);
@@ -350,19 +352,20 @@ namespace UartOperator{
         tcgetattr(FD, &stTermios); /* 获取串口参数 */
         switch(StopBit)
         {
-            case '1':
+            case 0:
             {
                 stTermios.c_cflag &= ~CSTOPB;
                 StopBitPrint = 1;
                 break;
             }
-            case '2':
+            case 1:
+            case 2:
             {
                 stTermios.c_cflag |= CSTOPB;
                 StopBitPrint = 2;
                 break;
             }
-            case '1.5':
+            
             default:
             {
                 ROS_INFO("[RS485 Error]:Unknow Stop Bit %d ,Check!!! \n",StopBit);

@@ -206,14 +206,14 @@ include_directories(
 
 
 
-add_executable(Test1_node_a src/node_a.cpp) #将node_a.cpp文件编译成可执行文件Test1_node_a
-add_executable(Test1_node_b src/node_b.cpp)
+#add_executable(Test1_node_a src/node_a.cpp) #将node_a.cpp文件编译成可执行文件Test1_node_a
+#add_executable(Test1_node_b src/node_b.cpp)
 
-add_dependencies(Test1_node_a ROS_Test1_generate_message_cpp) #添加可执行文件的消息依赖项
-add_dependencies(Test1_node_b ROS_Test1_generate_message_cpp)
+#add_dependencies(Test1_node_a ROS_Test1_generate_message_cpp) #添加可执行文件的消息依赖项
+#add_dependencies(Test1_node_b ROS_Test1_generate_message_cpp)
 
-target_link_libraries(Test1_node_a ${catkin_LIBRARIES}) #为可执行文件Test_node_a添加链接库
-target_link_libraries(Test1_node_b ${catkin_LIBRARIES})
+#target_link_libraries(Test1_node_a ${catkin_LIBRARIES}) #为可执行文件Test_node_a添加链接库
+#target_link_libraries(Test1_node_b ${catkin_LIBRARIES})
 
 
 
