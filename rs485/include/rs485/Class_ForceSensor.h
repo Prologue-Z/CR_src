@@ -11,9 +11,7 @@
 #ifndef CLASS_FORCESENSOR_H
 #define CLASS_FORCESENSOR_H
 
-#include <serial/serial.h>
-
-#include <list>
+#include <rs485/Class_Serial.h>
 
 namespace NS_ForceSensor{
     class ForceSensor{
@@ -26,13 +24,11 @@ namespace NS_ForceSensor{
         ForceSensor();
 
         private:
-        const char* SerName = "/dev/ttyCH341USB0";
         const short BaudRate = 9600;
         const unsigned char AddBit = 0x01;
-
-        std::list<unsigned char *> SendDataList;//Data list to be sent
+        unsigned char SendFrame[8] = {0xaa,0xaa,0xaa};
         
-        serial::Serial Ser;
+        NS_Serial::Serial Ser;
 
         enum MSG_CMD{
             MC_BaudRate = 0xA2,
@@ -62,28 +58,22 @@ namespace NS_ForceSensor{
             RFI_FrameNum = 10,
         };
         
-        /**
-         * @brief set port->set baud rate->set time out->open serial
-         * 
-         * @return int 0-success -1-fail
-         */
-        int InitSer();
 
         int InitTrans();
 
         /**
-         * @brief add a frame data to SendDataList
+         * @brief get a frame date to renew Sendframe
          * 
          * @param cmd - command type
-         * @param data - related parameters
+         * @param data - parameters
          */
-        void AddFrame(MSG_CMD cmd,int data);
+        void RenewSFrame(MSG_CMD cmd,unsigned short data);
 
 
         /**
          * @brief get a frame(8 byte) data from SendDataList and send it
          * 
-         * @return size_t A size_t that indicates how many bytes should be written from the given data buffer.
+         * @return Bytes sent successfully
          */
         size_t SendMsg();
 
