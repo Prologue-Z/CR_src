@@ -11,83 +11,48 @@
 #include <ros/ros.h>
 #include <rs485/Class_ForceSensor.h>
 #include <rs485/Function_Common.h>
+#include <rs485/Class_Serial.h>
 
 
 namespace NS_ForceSensor{
     //public
     ForceSensor::ForceSensor(){
-        InitSer();
         InitTrans();
     }
 
     //private
-    int ForceSensor::InitSer(){
-        Ser.setPort(SerName);
-        Ser.setBaudrate(BaudRate);
-        serial::Timeout to = serial::Timeout::simpleTimeout(100);//ms
 
-        try{
-            Ser.open();
-        }
-        catch (serial::IOException&e){ 
-            ROS_ERROR_STREAM("[RS485 Error] Unable to open port "); 
-            return -1; 
-        }
-
-        if(Ser.isOpen()){ 
-            ROS_INFO_STREAM("[RS485] Serial Port initialized"); 
-            return 0;
-        } 
-        else{ 
-            return -1; 
-        }
-    }
-
-    void ForceSensor::AddFrame(MSG_CMD cmd,int data){
-        unsigned char *pNode = NULL;
-        unsigned char NewFrame[8];
-        NewFrame[0] = NewFrame[1] = NewFrame[2] = 0xAA;
-        NewFrame[SFI_Add] = AddBit;
-        
-        NewFrame[SFI_Cmd] = cmd;
-        NS_CommonFunction::ShortToChar(data, &NewFrame[SFI_Data]);
-
-        NewFrame[SFI_Check] = NS_CommonFunction::BCC(NewFrame,7);
-        unsigned char test = 0x01;
-        ROS_INFO_STREAM("[test]"<<test);
-        pNode = (unsigned char *)malloc(sizeof(NewFrame)); /* 发送线程会free掉它 */
-        memcpy(pNode, NewFrame, sizeof(NewFrame));
-        
-
-        SendDataList.push_back(pNode);
+    void ForceSensor::RenewSFrame(MSG_CMD cmd,unsigned short data){
+        unsigned short ts;//test
+        SendFrame[SFI_Add] = AddBit;
+        SendFrame[SFI_Cmd] = cmd;
+        NS_CommonFunction::ShortToChar(data, &SendFrame[SFI_Data]);
+        SendFrame[SFI_Check] = NS_CommonFunction::BCC(SendFrame,7);
     }
 
     size_t ForceSensor::SendMsg(){
-    unsigned char *SenBufNode = NULL;
     size_t size = 0;
-    SenBufNode = SendDataList.front();
-    SendDataList.pop_front();
-
-    size = Ser.write(SenBufNode,8);
-
-    delete SenBufNode;
+    size = Ser.swrite(SendFrame,8);  
+    ROS_INFO_STREAM("[test]ssize = "<<size);
     return size;
     }
 
     int ForceSensor::InitTrans(){
-        short flag = 0;
+        size_t flag = 0;
 
         //set baud rate
-        AddFrame(MC_BaudRate,3);//set baud rate:1-2400 2-4800 3-9600 4-19200 5-38400
+        RenewSFrame(MC_BaudRate,3);//set baud rate:1-2400 2-4800 3-9600 4-19200 5-38400
+        ROS_INFO_STREAM("[TEST]get new frame success");
         flag = SendMsg();
         if(flag<8){
             ROS_ERROR_STREAM("[RS485 Error]Failed to set baud rate of transmitter,flag = "<<flag);
-            Ser.close();
+            Ser.sclose();
             return -1;
         }
         else ROS_INFO_STREAM("[RS485]Set baud rate of transmitter successfully");
 
         //set range
+        /*
         AddFrame(MC_Range,10);//set range
         flag = SendMsg();
         if(flag<8){
@@ -126,7 +91,7 @@ namespace NS_ForceSensor{
             return -1;
         }
         else ROS_INFO_STREAM("[RS485]Set zero point of transmitter successfully");
-
+        */
         return 0;
     }
 
