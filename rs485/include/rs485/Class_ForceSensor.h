@@ -24,7 +24,6 @@ namespace NS_ForceSensor{
         ForceSensor();
 
         private:
-        const short BaudRate = 9600;
         const unsigned char AddBit = 0x01;
         unsigned char SendFrame[8] = {0xaa,0xaa,0xaa};
         
