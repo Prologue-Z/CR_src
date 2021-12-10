@@ -12,8 +12,8 @@
 
 #include <rs485/Class_ForceSensor.h>
 
-#include <serial/serial.h>
-#include <fcntl.h>
+//#include <serial/serial.h>
+//#include <fcntl.h>
 
 
 int main(int argc, char **argv)
@@ -21,10 +21,10 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "rs485_node");
     ros::NodeHandle nh("~");
 
-    //NS_ForceSensor::ForceSensor FS;
+    NS_ForceSensor::ForceSensor FS;
 
     //test1
-    
+    /*
     serial::Serial ser;
     ser.setPort("/dev/ttyCH341USB0");
     //ser.setBaudrate(9600);
@@ -35,6 +35,7 @@ int main(int argc, char **argv)
     unsigned char buff[8]={0xaa,0xaa,0xaa,0x01,0xb1,0x00,0x00,0x1a};
     size_t ss = ser.write(buff,8);
     ROS_INFO_STREAM("[test]ss="<<ss);
+    */
     
    //test2
    /*

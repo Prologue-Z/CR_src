@@ -10,13 +10,14 @@
 
 #include <rs485/Class_Serial.h>
 #include <fcntl.h>
+#include <termios.h>
 
 namespace NS_Serial{
     //public
     Serial::Serial(){
         //O_RDWR-read&write   O_NOCTTY-can not controlled by the terminal
         fd = open(port,O_RDWR | O_NOCTTY);
-        tcflush(DevFd, TCIFLUSH);//clear buffer
+        tcflush(fd, TCIFLUSH);//clear buffer
     }
 
     size_t Serial::swrite(unsigned char* data,size_t size){
