@@ -16,6 +16,7 @@ namespace NS_Serial{
     Serial::Serial(){
         //O_RDWR-read&write   O_NOCTTY-can not controlled by the terminal
         fd = open(port,O_RDWR | O_NOCTTY);
+        tcflush(DevFd, TCIFLUSH);//clear buffer
     }
 
     size_t Serial::swrite(unsigned char* data,size_t size){
