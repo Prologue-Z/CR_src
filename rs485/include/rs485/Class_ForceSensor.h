@@ -76,6 +76,8 @@ namespace NS_ForceSensor{
          */
         size_t SendMsg();
 
+        size_t ReadMsg();
+
     };
 }
 

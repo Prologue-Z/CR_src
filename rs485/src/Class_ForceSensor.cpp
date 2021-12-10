@@ -51,47 +51,6 @@ namespace NS_ForceSensor{
         }
         else ROS_INFO_STREAM("[RS485]Set baud rate of transmitter successfully");
 
-        //set range
-        /*
-        AddFrame(MC_Range,10);//set range
-        flag = SendMsg();
-        if(flag<8){
-            ROS_ERROR_STREAM("[RS485 Error]Failed to set range of transmitter");
-            Ser.close();
-            return -1;
-        }
-        else ROS_INFO_STREAM("[RS485]Set range of transmitter successfully");
-
-        //set unit
-        AddFrame(MC_Unit,2);//set unit:1-MPa 2-Kg 3-T
-        flag = SendMsg();
-        if(flag<8){
-            ROS_ERROR_STREAM("[RS485 Error]Failed to set unit of transmitter");
-            Ser.close();
-            return -1;
-        }
-        else ROS_INFO_STREAM("[RS485]Set unit of transmitter successfully");
-
-        //set polarity
-        AddFrame(MC_Polarity,2);//1-Unipolarity 2-Bipolarity  -10-+10
-        flag = SendMsg();
-        if(flag<8){
-            ROS_ERROR_STREAM("[RS485 Error]Failed to set polarity of transmitter");
-            Ser.close();
-            return -1;
-        }
-        else ROS_INFO_STREAM("[RS485]Set polarity of transmitter successfully");
-
-        //reset zero point
-        AddFrame(MC_ZeroPoint,0);
-        flag = SendMsg();
-        if(flag<8){
-            ROS_ERROR_STREAM("[RS485 Error]Failed to set zero point of transmitter");
-            Ser.close();
-            return -1;
-        }
-        else ROS_INFO_STREAM("[RS485]Set zero point of transmitter successfully");
-        */
         return 0;
     }
 

@@ -17,6 +17,7 @@ namespace NS_Serial{
     Serial::Serial(){
         //O_RDWR-read&write   O_NOCTTY-can not controlled by the terminal
         fd = open(port,O_RDWR | O_NOCTTY);
+        ROS_INFO_STREAM("[RS485]Open port successfully,fd = "<<fd);
         tcflush(fd, TCIFLUSH);//clear buffer
     }
 
