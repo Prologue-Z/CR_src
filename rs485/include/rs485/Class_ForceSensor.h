@@ -26,6 +26,7 @@ namespace NS_ForceSensor{
         private:
         const unsigned char AddBit = 0x01;
         unsigned char SendFrame[8] = {0xaa,0xaa,0xaa};
+        double Force[3];
         
         NS_Serial::Serial Ser;
 
@@ -57,7 +58,11 @@ namespace NS_ForceSensor{
             RFI_FrameNum = 10,
         };
         
-
+        /**
+         * @brief initialize transmitter:set baud rate
+         * 
+         * @return int 0-success -1-failure
+         */
         int InitTrans();
 
         /**
@@ -70,14 +75,20 @@ namespace NS_ForceSensor{
 
 
         /**
-         * @brief get a frame(8 byte) data from SendDataList and send it
+         * @brief send SendFrame
          * 
          * @return Bytes sent successfully
          */
         size_t SendMsg();
 
+        /**
+         * @brief read 3 frame(10 byte) from buffer
+         * 
+         * @return size_t Bytes sent successfully
+         */
         size_t ReadMsg();
 
+        void Handledata(unsigned char *ReBuff);
     };
 }
 

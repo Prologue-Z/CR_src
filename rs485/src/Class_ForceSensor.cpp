@@ -31,18 +31,22 @@ namespace NS_ForceSensor{
     }
 
     size_t ForceSensor::SendMsg(){
-    size_t size = 0;
-    size = Ser.swrite(SendFrame,8);  
-    ROS_INFO_STREAM("[test]ssize = "<<size);
+    size_t size = Ser.swrite(SendFrame,8);  //8-a send frame of transmitter
     return size;
+    }
+
+    size_t ForceSensor::ReadMsg(){
+        unsigned char* ReadBuff = new unsigned char[30];//30=10*3 10-a receive frame of transmitter;3-three forcesensors
+        size_t size = Ser.sread(ReadBuff,30);
+        ROS_INFO_STREAM("[test] rs = "<<size);
+        
+        return size;
     }
 
     int ForceSensor::InitTrans(){
         size_t flag = 0;
-
         //set baud rate
         RenewSFrame(MC_BaudRate,3);//set baud rate:1-2400 2-4800 3-9600 4-19200 5-38400
-        ROS_INFO_STREAM("[TEST]get new frame success");
         flag = SendMsg();
         if(flag<8){
             ROS_ERROR_STREAM("[RS485 Error]Failed to set baud rate of transmitter,flag = "<<flag);
@@ -52,6 +56,14 @@ namespace NS_ForceSensor{
         else ROS_INFO_STREAM("[RS485]Set baud rate of transmitter successfully");
 
         return 0;
+    }
+
+    void ForceSensor::Handledata(unsigned char *ReBuff){
+        unsigned short s[3];
+        for(int i=0;i<3;i++){
+            s[i] = NS_CommonFunction::CharToShort(&ReBuff[RFI_Data+i*RFI_FrameNum]);
+            Force[i] = s[i]*pow(10,-ReBuff[RFI_Decimal+i*RFI_FrameNum]);
+        }
     }
 
 }

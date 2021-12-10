@@ -16,9 +16,11 @@ namespace NS_CommonFunction{
         byte[1] = Short & 0xFF;
     }
 
-    void CharToShort(unsigned short Short,unsigned char *byte){
+    unsigned short CharToShort(unsigned char* byte){
+        unsigned short Short = 0;
         Short |= byte[1];
         Short |= byte[0] << 8;
+        return Short;
     }
 
     unsigned char BCC(unsigned char* data,int length){

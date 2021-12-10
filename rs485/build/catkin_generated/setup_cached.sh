@@ -8,6 +8,8 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/zhangxu/catkin_ws/src/rs485/build/devel:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/home/zhangxu/catkin_ws/src/rs485/build/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/zhangxu/catkin_ws/src/rs485/build/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/zhangxu/catkin_ws/src/rs485/build'
 export ROSLISP_PACKAGE_DIRECTORIES='/home/zhangxu/catkin_ws/src/rs485/build/devel/share/common-lisp'
 export ROS_PACKAGE_PATH="/home/zhangxu/catkin_ws/src/rs485:$ROS_PACKAGE_PATH"
