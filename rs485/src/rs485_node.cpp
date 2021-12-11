@@ -25,9 +25,10 @@ int main(int argc, char **argv)
     
     NS_ForceSensor::ForceSensor FS;
     ros::Rate Collect(1);
+    double* ForceShow;
     while (1)
     {
-        double* ForceShow = FS.GetForce();
+        ForceShow = FS.GetForce();
         ROS_INFO_STREAM("[RS485]F1 = "<<ForceShow[0]<<"  F2 = "<<ForceShow[1]<<"  F3 = "<<ForceShow[2]);
         Collect.sleep();
     }    
