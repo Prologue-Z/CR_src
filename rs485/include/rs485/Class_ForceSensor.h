@@ -23,10 +23,11 @@ namespace NS_ForceSensor{
          */
         ForceSensor();
 
+        double* GetForce();
+
         private:
-        const unsigned char AddBit = 0x01;
         unsigned char SendFrame[8] = {0xaa,0xaa,0xaa};
-        double Force[3];
+        double Force[3] = {0,0,0};
         
         NS_Serial::Serial Ser;
 
@@ -68,11 +69,11 @@ namespace NS_ForceSensor{
         /**
          * @brief get a frame date to renew Sendframe
          * 
+         * @param add add index
          * @param cmd - command type
          * @param data - parameters
          */
-        void RenewSFrame(MSG_CMD cmd,unsigned short data);
-
+        void RenewSFrame(unsigned short add,MSG_CMD cmd,unsigned short data);
 
         /**
          * @brief send SendFrame
@@ -88,6 +89,11 @@ namespace NS_ForceSensor{
          */
         size_t ReadMsg();
 
+        /**
+         * @brief handle data from buffer to force
+         * 
+         * @param ReBuff 
+         */
         void Handledata(unsigned char *ReBuff);
     };
 }

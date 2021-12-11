@@ -49,7 +49,19 @@ namespace NS_Serial{
 
         private:
         int fd;
-        const char* port = "/dev/ttyCH341USB0";       
+        const char* port = "/dev/ttyCH341USB0";
+        const int BaudRate = 9600;
+
+        /**
+         * @brief Set the opt object
+         * from https://blog.csdn.net/zgrjkflmkyc/article/details/8974243         * 
+         * @param nSpeed
+         * @param nBits 
+         * @param nEvent 
+         * @param nStop 
+         * @return int 
+         */
+        int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop);
     };
 }
 
