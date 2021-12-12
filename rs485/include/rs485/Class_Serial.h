@@ -17,7 +17,7 @@ namespace NS_Serial{
     class Serial{
         public:
         /**
-         * @brief Construct a new Serial object
+         * @brief Construct a new Serial object  and init it
          * 
          */
         Serial();        
@@ -53,13 +53,13 @@ namespace NS_Serial{
         const int BaudRate = 9600;
 
         /**
-         * @brief Set the opt object
+         * @brief init the serial object
          * from https://blog.csdn.net/zgrjkflmkyc/article/details/8974243         * 
-         * @param nSpeed
-         * @param nBits 
+         * @param nSpeed baud rate
+         * @param nBits data bits
          * @param nEvent 
-         * @param nStop 
-         * @return int 
+         * @param nStop stop bits
+         * @return int 0-success  -1-failure
          */
         int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop);
     };
