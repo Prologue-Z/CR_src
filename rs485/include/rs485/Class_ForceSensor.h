@@ -18,11 +18,16 @@ namespace NS_ForceSensor{
         public:
 
         /**
-         * @brief Construct a new Force Sensor object
+         * @brief Construct a new Force Sensor object and init it
          * 
          */
         ForceSensor();
 
+        /**
+         * @brief Get the Force object
+         * 
+         * @return double* Forece[3]
+         */
         double* GetForce();
 
         private:
@@ -78,23 +83,25 @@ namespace NS_ForceSensor{
         /**
          * @brief send SendFrame
          * 
-         * @return Bytes sent successfully
+         * @return Bytes read successfully
          */
         size_t SendMsg();
 
         /**
-         * @brief read 3 frame(10 byte) from buffer
+         * @brief read 3 frame(10 byte) from buffer and handle it to Force
          * 
+         * @param i address of data
          * @return size_t Bytes sent successfully
          */
-        size_t ReadMsg();
+        size_t ReadMsg(int i);
 
         /**
          * @brief handle data from buffer to force
          * 
-         * @param ReBuff 
+         * @param ReBuff a frame data(unsigned char)
+         * @return data(unsigned char) to F(N)
          */
-        void Handledata(unsigned char *ReBuff);
+        double Handledata(unsigned char *ReBuff);
     };
 }
 

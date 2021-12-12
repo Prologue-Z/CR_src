@@ -22,14 +22,13 @@ namespace NS_ForceSensor{
 
     double* ForceSensor::GetForce(){
         for(int i=1;i<=3;i++){
-            RenewSFrame(1,MC_SingleOutput,0);
+            RenewSFrame(i,MC_SingleOutput,0);
             SendMsg();
-            usleep(50000);//50ms
-            ReadMsg();
-        }        
+            usleep(100000);//50ms
+            ReadMsg(i);
+        }
         return Force;
     }
-
     //private
 
     void ForceSensor::RenewSFrame(unsigned short add,MSG_CMD cmd,unsigned short data){
@@ -41,13 +40,21 @@ namespace NS_ForceSensor{
 
     size_t ForceSensor::SendMsg(){
     size_t size = Ser.swrite(SendFrame,8);  //8-a send frame of transmitter
+    if(size<8) {        
+        ROS_ERROR_STREAM("[RS485]Send data failue");
+        Ser.sclose();
+    }
     return size;
     }
 
-    size_t ForceSensor::ReadMsg(){
-        unsigned char* ReadBuff = new unsigned char[30];//30=10*3 10-a receive frame of transmitter;3-three forcesensors
-        size_t size = Ser.sread(ReadBuff,30);
-        Handledata(ReadBuff);
+    size_t ForceSensor::ReadMsg(int i){
+        unsigned char* ReadBuff = new unsigned char[10];//10-a receive frame of transmitter
+        size_t size = Ser.sread(ReadBuff,10);
+        if(size<10){
+            ROS_ERROR_STREAM("[RS485]Read data failure");
+        }
+        //sROS_INFO_STREAM("[test]rf[3] = "<<short(ReadBuff[RFI_Add]));
+        Force[i-1] = Handledata(ReadBuff);
         return size;
     }
 
@@ -68,13 +75,12 @@ namespace NS_ForceSensor{
         return 0;
     }
 
-    void ForceSensor::Handledata(unsigned char *ReBuff){
-        short s[3];
-        for(int i=0;i<3;i++){
-            s[i] = NS_CommonFunction::CharToShort(&ReBuff[RFI_Data+i*RFI_FrameNum]);
-            Force[i] = s[i]*pow(10,-ReBuff[RFI_Decimal+i*RFI_FrameNum]);//unit -kg
-            Force[i] *= 9.8;//unit-N
-        }
+    double ForceSensor::Handledata(unsigned char *ReBuff){
+        short s;
+        s = NS_CommonFunction::CharToShort(&ReBuff[RFI_Data]);
+        double F = s*pow(10,-ReBuff[RFI_Decimal]+1);//unit -kg
+        F *= 9.8;//unit-N
+        return F;
     }
 
 }
