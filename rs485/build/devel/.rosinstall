@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/zhangxu/catkin_ws/src/rs485/build/devel/setup.sh

@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: rs485
+Description: Description of rs485
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lrs485
+Requires: roscpp serial

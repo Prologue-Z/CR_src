@@ -78,7 +78,7 @@ namespace NS_ForceSensor{
     double ForceSensor::Handledata(unsigned char *ReBuff){
         short s;
         s = NS_CommonFunction::CharToShort(&ReBuff[RFI_Data]);
-        double F = s*pow(10,-ReBuff[RFI_Decimal]+1);//unit -kg
+        double F = s*pow(10,-int(ReBuff[RFI_Decimal])+1);//unit -kg
         F *= 9.8;//unit-N
         return F;
     }

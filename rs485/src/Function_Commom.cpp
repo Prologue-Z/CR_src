@@ -17,7 +17,9 @@ namespace NS_CommonFunction{
     }
 
     short CharToShort(unsigned char* byte){
-        short Short = byte[0]*16*16+byte[1];
+        short Short = 0;
+        Short |= byte[1];
+        Short |= byte[0]<<8;
         return Short;
     }
 
