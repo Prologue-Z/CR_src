@@ -1,8 +1,0 @@
-prefix=/home/zhangxu/catkin_ws/src/build/devel
-
-Name: ContinuumRobot_DataCollection
-Description: Description of ContinuumRobot_DataCollection
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

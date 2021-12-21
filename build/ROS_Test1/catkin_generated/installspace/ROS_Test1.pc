@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: ROS_Test1
-Description: Description of ROS_Test1
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
