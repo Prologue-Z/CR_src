@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(sotest)
+project(continuumrobot)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -102,7 +102,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES sotest
+#  LIBRARIES continuumrobot
 #  CATKIN_DEPENDS roscpp
 #  DEPENDS system_lib
 )
@@ -126,7 +126,7 @@ link_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/sotest.cpp
+#   src/${PROJECT_NAME}/continuumrobot.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -137,7 +137,7 @@ link_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/sotest_node.cpp)
+add_executable(${PROJECT_NAME}_node src/continuumrobot_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -153,10 +153,8 @@ add_executable(${PROJECT_NAME}_node src/sotest_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   -lpthread
-#  /home/zhangxu/catkin_ws/src/sotest/lib/libECanVci.so.1
   libECanVci.so.1
   -lusb
-
 )
 
 #############
@@ -206,7 +204,7 @@ target_link_libraries(${PROJECT_NAME}_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_sotest.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_continuumrobot.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
