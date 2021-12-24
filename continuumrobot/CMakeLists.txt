@@ -118,12 +118,6 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-link_directories(
-  ${catkin_LIB_DIRS}
-  lib
-)
-
-
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
