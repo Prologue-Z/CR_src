@@ -1,8 +1,0 @@
-prefix=/home/zhangxu/catkin_ws/src/sotest/build/devel
-
-Name: sotest
-Description: Description of sotest
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

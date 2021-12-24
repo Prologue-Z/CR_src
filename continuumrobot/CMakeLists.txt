@@ -119,9 +119,10 @@ include_directories(
 )
 
 link_directories(
-  lib
   ${catkin_LIB_DIRS}
+  lib
 )
+
 
 
 ## Declare a C++ library
@@ -153,7 +154,7 @@ add_executable(${PROJECT_NAME}_node src/continuumrobot_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   -lpthread
-  libECanVci.so.1
+  ${PROJECT_SOURCE_DIR}/lib/libECanVci.so.1
   -lusb
 )
 
