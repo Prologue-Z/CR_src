@@ -18,4 +18,10 @@ namespace NS_CommonFunction{
      * @return int 
      */
     int ByteToInt(CAN_OBJ ReceiveMotor);
+
+    /**
+     * @brief int->BYTE[2]
+     * 
+     */
+    void IntToBYTE(int Int,unsigned char *byte);
 }

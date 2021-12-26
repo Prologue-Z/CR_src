@@ -20,4 +20,9 @@ namespace NS_CommonFunction{
         Int |= ReceiveMotor.Data[3]<<24;
         return Int;
     }
+
+    void IntToBYTE(int Int,unsigned char *byte){
+        byte[0] = (Int >> 8) & 0xFF;
+        byte[1] = Int & 0xFF;
+    }
 }

@@ -13,7 +13,6 @@
 #include "continuumrobot/Class_USBCAN.h"
 
 namespace NS_USBCAN{
-
     //public
     DWORD USBCAN::OpenCAN(){
         //open device
@@ -29,10 +28,10 @@ namespace NS_USBCAN{
         //initializate CAN
         INIT_CONFIG init_config;
         init_config.AccCode = 0; 
-        init_config.AccMask =0xffffff; 
+        init_config.AccMask =0xffff; 
         init_config.Filter = 0;
         init_config.Timing0 = 0; 
-        init_config.Timing1 = 0x1c; 
+        init_config.Timing1 = 0x14; 
         init_config.Mode = 0;
         dwRel = InitCAN(nDeviceType, nDeviceInd,nCANInd,&init_config);
         if (dwRel == STATUS_ERR) 
@@ -51,10 +50,44 @@ namespace NS_USBCAN{
             return STATUS_ERR; 
         }
         ROS_INFO_STREAM("[CAN]Start CAN successfully");
+        return dwRel;
+    }
 
-        
+    BOOL USBCAN::CloseCAN(){
+        BOOL bRel = 0;
+        while(bRel = CloseDevice(nDeviceType, nDeviceInd) != true);
+        return bRel;
+    }
 
-
+    DWORD USBCAN::ClearCAN(){
+        DWORD dwRel;
+        dwRel = ClearBuffer(nDeviceType, nDeviceInd, nCANInd);
+        if (dwRel == STATUS_ERR){  
+            ROS_ERROR_STREAM("[CAN]Failed to clear buffer ");
+            CloseDevice(nDeviceType, nDeviceInd);  
+            return 0; 
         }
+        ROS_INFO_STREAM("[CAN]Clear buffer successfully");
+        return dwRel;
+    }
+
+    DWORD USBCAN::SendData(CAN_OBJ *Data,int Num){
+        DWORD dwRel;
+        dwRel = Transmit(nDeviceType, nDeviceInd, nCANInd,Data,Num);
+        return dwRel;
+    }
+
+    DWORD USBCAN::ReceiveData(CAN_OBJ *Data,int Num,int WaitTime){
+        DWORD dwRel;
+        while(int Receivenum = GetReceiveNum(nDeviceType, nDeviceInd, nCANInd)<Num);
+        dwRel = Receive(nDeviceType, nDeviceInd, nCANInd,Data,Num,WaitTime);
+        return dwRel;
+    }
+
+    void USBCAN::PrintCAN_OBJ(CAN_OBJ Data){
+        ROS_INFO_STREAM("ID="<<int(Data.ID));
+        ROS_INFO_STREAM("Data="<<int(Data.Data[0])<<" "<<int(Data.Data[1])<<" "<<int(Data.Data[2])<<" "<<int(Data.Data[3])<<" "<<int(Data.Data[4])<<" "<<int(Data.Data[5])<<" "<<int(Data.Data[6])<<" "<<int(Data.Data[7]));
+    }
+
 
 }

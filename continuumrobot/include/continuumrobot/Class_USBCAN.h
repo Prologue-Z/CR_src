@@ -23,20 +23,57 @@ namespace NS_USBCAN{
         USBCAN();
 
         /**
-         * @brief open CAN:open device-> initialization CAN->start CAN->clear buffer
+         * @brief open CAN:open device -> initialization CAN -> start CAN
          * 
          * @return DWORD 1-success 0-failure
          */
         DWORD OpenCAN();
 
+        /**
+         * @brief close CAN:failure->close(while)
+         * 
+         * @return BOOL 1-success 0-failure
+         */
+        BOOL CloseCAN();
 
+        /**
+         * @brief clear buffer
+         * 
+         * @return DWORD 1-success 0-failure
+         */
+        DWORD ClearCAN();
+
+        /**
+         * @brief Send CAN_OBJ
+         * 
+         * @param Data CAN_OBJ[]
+         * @param Num number of CAN_OBJ
+         * @return DWORD number of CAN_OBJ  successfully sent
+         */
+        DWORD SendData(CAN_OBJ *Data,int Num);
+
+        /**
+         * @brief receive CAN_OBJ while GetReceiveNum = Num
+         * 
+         * @param Data CAN_OBJ[]
+         * @param Num number of CAN_OBJ received
+         * @param WaitTime unit ms
+         * @return DWORD DWORD number of CAN_OBJ  successfully receive
+         */
+        DWORD ReceiveData(CAN_OBJ *Data,int Num,int WaitTime);
+
+        /**
+         * @brief print CAN_OBJ int(Data)
+         * 
+         * @param Data CAN_OBJ
+         */
+        void PrintCAN_OBJ(CAN_OBJ Data);
 
         private:
         int nDeviceType = 3;//3-USBCAN I  4-USBCAN II
         int nDeviceInd = 0;//Device index
         int nReserved = 0;
         int nCANInd =0;//CAN index
-
 
     };
 }
