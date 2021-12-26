@@ -74,8 +74,6 @@ namespace NS_Motor{
      */
     void InitSendData();
 
-
-
     };
 
 }
