@@ -212,6 +212,7 @@ int main(int argc, char **argv)
 	}
 	ROS_INFO_STREAM("set speed success");
 
+	sleep(1);
 	//clear buffer
 	dwRel = ClearBuffer(nDeviceType, nDeviceInd, nCANInd);
 	if (dwRel == STATUS_ERR){  
