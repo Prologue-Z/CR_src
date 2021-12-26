@@ -107,10 +107,12 @@ namespace NS_Motor{
     DWORD Motor::SetSpeed(double Speed[3]){
         DWORD dwRel;
         InitSendData();
+        double WriteValue[3];
 
         for(int i=0;i<3;i++){
             SendData[i].Data[2] = 0x06;
-            NS_CommonFunction::IntToBYTE(int(Speed[i]*ReductionRatio),&SendData[i].Data[3]);
+            WriteValue[i] = Speed[i]*8192/3000;//reference:IDS-306 usr's manual p23
+            NS_CommonFunction::IntToBYTE(int(WriteValue[i]*ReductionRatio),&SendData[i].Data[3]);
         }
 
         dwRel = CAN.SendData(SendData,3);       
@@ -147,7 +149,7 @@ namespace NS_Motor{
         }
 
         for(int i=0;i<3;i++){
-            Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR*2*M_PI/ReductionRatio;
+            Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR/ReductionRatio;
         }
 
         ROS_INFO_STREAM("[Motor]Get position successfully ");

@@ -22,7 +22,7 @@ namespace NS_USBCAN{
         for(int i=0;i<3;i++){
             dwRel = OpenDevice(nDeviceType, nDeviceInd, nReserved);
             if (dwRel != STATUS_OK){ 
-                ROS_ERROR_STREAM("[CAN]Failed to open device,try "<<i<<" times");                
+                ROS_ERROR_STREAM("[CAN]Failed to open device,try "<<i+1<<" times");                
             } 
             else{
                 break;
@@ -63,8 +63,20 @@ namespace NS_USBCAN{
     }
 
     BOOL USBCAN::CloseCAN(){
-        BOOL bRel = 0;
-        while(bRel = CloseDevice(nDeviceType, nDeviceInd) != true);
+        BOOL bRel;
+        for(int i=0;i<5;i++){
+            bRel = CloseDevice(nDeviceType, nDeviceInd);
+            if (bRel != STATUS_OK){ 
+                ROS_ERROR_STREAM("[CAN]Failed to close device,try "<<i+1<<" times");                
+            } 
+            else{
+                break;
+            }
+        }
+        if (bRel != STATUS_OK){ 
+            return 0; 
+        } 
+         ROS_INFO_STREAM("[CAN]Close CAN successfully");
         return bRel;
     }
 

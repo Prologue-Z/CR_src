@@ -52,9 +52,9 @@ namespace NS_Motor{
     DWORD SetSpeed(double Speed[3]);
 
     /**
-     * @brief Get the Position of motors(Phase angle relative to power on)
+     * @brief Get the Position of motors(number of circles relative to power on)
      * 
-     * @return double*radian measure
+     * @return double* number of circles
      */
     double * GetPosition();
 

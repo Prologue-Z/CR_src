@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	Motors.SetSpeed(Speed);
 	double* P = new double[3];
 	P = Motors.GetPosition();
-	ROS_INFO_STREAM("p1="<<P[0]<<"p2="<<P[1]<<"p3="<<P[2]);
+	ROS_INFO_STREAM("p1="<<P[0]<<"r, p2="<<P[1]<<"r, p3="<<P[2]<<"r");
 	Motors.CloseMotors();
 
 
