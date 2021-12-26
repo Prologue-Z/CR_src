@@ -74,7 +74,6 @@ namespace NS_USBCAN{
         int nDeviceInd = 0;//Device index
         int nReserved = 0;
         int nCANInd =0;//CAN index
-
     };
 }
 
