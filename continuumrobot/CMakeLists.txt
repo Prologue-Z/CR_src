@@ -118,6 +118,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+link_directories(
+  ${PROJECT_SOURCE_DIR}/lib
+  ${catkin_LIB_DIRS}
+)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -153,7 +157,7 @@ add_executable(${PROJECT_NAME}_node
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   -lpthread
-  ${PROJECT_SOURCE_DIR}/lib/libECanVci.so.1
+  libECanVci.so.1
   -lusb
 )
 

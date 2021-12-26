@@ -65,7 +65,7 @@ namespace NS_Motor{
     CAN_OBJ SendData[3];
     CAN_OBJ ReceiveData[3];
     const double ReductionRatio = 42.3;
-    const int Encoder_PPR = 1024;
+    const int Encoder_PPR = 1024*4;//1024-ppr 4-frequency doubling
     double Position[3]={0,0,0};
 
     /**
