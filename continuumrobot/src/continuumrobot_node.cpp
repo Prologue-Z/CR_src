@@ -212,6 +212,15 @@ int main(int argc, char **argv)
 	}
 	ROS_INFO_STREAM("set speed success");
 
+	//clear buffer
+	dwRel = ClearBuffer(nDeviceType, nDeviceInd, nCANInd);
+	if (dwRel == STATUS_ERR){  
+		ROS_ERROR("fail clear buffer");
+		CloseDevice(nDeviceType, nDeviceInd);  
+		return -1; 
+	}
+	ROS_INFO("clear buffer successfully");
+
 	//receive position
 	for(int i=0;i<3;i++){
 		SendMotor[i].Data[DI_FunctionCode] = 0x2a;
