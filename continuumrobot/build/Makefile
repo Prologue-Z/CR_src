@@ -492,6 +492,60 @@ gtest/fast:
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
+src/Class_Motor.o: src/Class_Motor.cpp.o
+
+.PHONY : src/Class_Motor.o
+
+# target to build an object file
+src/Class_Motor.cpp.o:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_Motor.cpp.o
+.PHONY : src/Class_Motor.cpp.o
+
+src/Class_Motor.i: src/Class_Motor.cpp.i
+
+.PHONY : src/Class_Motor.i
+
+# target to preprocess a source file
+src/Class_Motor.cpp.i:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_Motor.cpp.i
+.PHONY : src/Class_Motor.cpp.i
+
+src/Class_Motor.s: src/Class_Motor.cpp.s
+
+.PHONY : src/Class_Motor.s
+
+# target to generate assembly for a file
+src/Class_Motor.cpp.s:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_Motor.cpp.s
+.PHONY : src/Class_Motor.cpp.s
+
+src/Class_USBCAN.o: src/Class_USBCAN.cpp.o
+
+.PHONY : src/Class_USBCAN.o
+
+# target to build an object file
+src/Class_USBCAN.cpp.o:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o
+.PHONY : src/Class_USBCAN.cpp.o
+
+src/Class_USBCAN.i: src/Class_USBCAN.cpp.i
+
+.PHONY : src/Class_USBCAN.i
+
+# target to preprocess a source file
+src/Class_USBCAN.cpp.i:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.i
+.PHONY : src/Class_USBCAN.cpp.i
+
+src/Class_USBCAN.s: src/Class_USBCAN.cpp.s
+
+.PHONY : src/Class_USBCAN.s
+
+# target to generate assembly for a file
+src/Class_USBCAN.cpp.s:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.s
+.PHONY : src/Class_USBCAN.cpp.s
+
 src/Function_Common.o: src/Function_Common.cpp.o
 
 .PHONY : src/Function_Common.o
@@ -584,6 +638,12 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... src/Class_Motor.o"
+	@echo "... src/Class_Motor.i"
+	@echo "... src/Class_Motor.s"
+	@echo "... src/Class_USBCAN.o"
+	@echo "... src/Class_USBCAN.i"
+	@echo "... src/Class_USBCAN.s"
 	@echo "... src/Function_Common.o"
 	@echo "... src/Function_Common.i"
 	@echo "... src/Function_Common.s"

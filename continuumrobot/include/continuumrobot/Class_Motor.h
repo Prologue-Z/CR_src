@@ -66,6 +66,7 @@ namespace NS_Motor{
     CAN_OBJ ReceiveData[3];
     const double ReductionRatio = 42.3;
     const int Encoder_PPR = 1024;
+    double Position[3]={0,0,0};
 
     /**
      * @brief initialize SendData

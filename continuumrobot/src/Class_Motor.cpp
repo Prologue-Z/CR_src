@@ -15,10 +15,25 @@
 
 namespace NS_Motor{
     //public
+    Motor::Motor(){}
+    
     DWORD Motor::InitMotors(){
         DWORD dwRel;
-        dwRel = CAN.OpenCAN();
+        for(int i=0;i<3;i++){
+            dwRel = CAN.OpenCAN();
+            if(dwRel = 1){                
+                ROS_INFO_STREAM("[CAN]Try open CAN "<<i+1<<" times");
+                break;
+            }
+        }
+        if(dwRel != STATUS_OK){
+            return dwRel;
+        }
+
         dwRel = CAN.ClearCAN();
+        if(dwRel != STATUS_OK){
+            return dwRel;
+        }
         InitSendData();
         return dwRel;
     }
@@ -104,7 +119,7 @@ namespace NS_Motor{
             NS_CommonFunction::IntToBYTE(int(Speed[i]*ReductionRatio),&SendData[i].Data[3]);
         }
 
-        dwRel = CAN.SendData(SendData,3);        
+        dwRel = CAN.SendData(SendData,3);       
         dwRel = CAN.ReceiveData(ReceiveData,3,1000);
 
         if(dwRel < 3&&ReceiveData[0].Data[1]!=0x1b&&ReceiveData[1].Data[1]!=0x1b&&ReceiveData[2].Data[1]!=0x1b){
@@ -119,13 +134,12 @@ namespace NS_Motor{
 
     double * Motor::GetPosition(){
         DWORD dwRel;
-        double Position[3];
         InitSendData();
 
         for(int i=0;i<3;i++){
             SendData[i].Data[1] = 0x2a;//read
             SendData[i].Data[2] = 0xe8;
-            SendData[i].Data[2] = 0xe9;         
+            SendData[i].Data[5] = 0xe9;         
         }
 
         dwRel = CAN.SendData(SendData,3);
@@ -138,10 +152,13 @@ namespace NS_Motor{
         }
 
         for(int i=0;i<3;i++){
-            Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR*2*M_PI;
+            Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR*2*M_PI/ReductionRatio;
         }
 
-        ROS_INFO_STREAM("[Motor]Get position successfully");
+        CAN.PrintCAN_OBJ(ReceiveData[0]);
+        CAN.PrintCAN_OBJ(ReceiveData[1]);
+        CAN.PrintCAN_OBJ(ReceiveData[2]);
+        ROS_INFO_STREAM("[Motor]Get position successfully ");
         return Position;
     }
 

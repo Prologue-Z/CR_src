@@ -135,6 +135,8 @@ include_directories(
 add_executable(${PROJECT_NAME}_node
 	src/continuumrobot_node.cpp
 	src/Function_Common.cpp
+	src/Class_Motor.cpp
+	src/Class_USBCAN.cpp
 )
 
 ## Rename C++ executable without prefix

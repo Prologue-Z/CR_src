@@ -14,6 +14,8 @@
 
 namespace NS_USBCAN{
     //public
+    USBCAN::USBCAN(){}
+
     DWORD USBCAN::OpenCAN(){
         //open device
         DWORD dwRel;
@@ -21,7 +23,7 @@ namespace NS_USBCAN{
         if (dwRel != STATUS_OK) 
         { 
             ROS_ERROR_STREAM("[CAN]Failed to open device");
-            return STATUS_ERR; 
+            return 0; 
         } 
         ROS_INFO_STREAM("[CAN]Open device successfully");
 
@@ -79,7 +81,8 @@ namespace NS_USBCAN{
 
     DWORD USBCAN::ReceiveData(CAN_OBJ *Data,int Num,int WaitTime){
         DWORD dwRel;
-        while(int Receivenum = GetReceiveNum(nDeviceType, nDeviceInd, nCANInd)<Num);
+        int Receivenum=0;
+        while(Receivenum < Num){Receivenum = GetReceiveNum(nDeviceType, nDeviceInd, nCANInd);};
         dwRel = Receive(nDeviceType, nDeviceInd, nCANInd,Data,Num,WaitTime);
         return dwRel;
     }

@@ -17,16 +17,24 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "continuumrobot_node");
     ros::NodeHandle nh("~"); 
 
+	DWORD dwRel;
 	NS_Motor::Motor Motors;
-	Motors.InitMotors();
-	Motors.EnableMotors();
+	dwRel = Motors.InitMotors();
+	if(dwRel != STATUS_OK){
+		return dwRel;
+	}
+
+	dwRel = Motors.EnableMotors();
+	if(dwRel != STATUS_OK){
+		return dwRel;
+	}
 	Motors.SetSpeedMode();
-	double Speed[3] = {60,30,15};
+	double Speed[3] = {-60,-30,-15};
 	Motors.SetSpeed(Speed);
 	sleep(10);
 	for(int i=0;i<3;i++){Speed[i] = 0;}
 	Motors.SetSpeed(Speed);
-	double *P;
+	double* P = new double[3];
 	P = Motors.GetPosition();
 	ROS_INFO_STREAM("p1="<<P[0]<<"p2="<<P[1]<<"p3="<<P[2]);
 	Motors.CloseMotors();
