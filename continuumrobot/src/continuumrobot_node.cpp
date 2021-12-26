@@ -157,13 +157,12 @@ int main(int argc, char **argv)
 	ROS_INFO_STREAM("receive position");
 
 	CAN_OBJ ReceiveMotor[3];
-	int receivenum = GetReceiveNum(nDeviceType, nDeviceInd, nCANInd);
-	dwRel = Receive(nDeviceType, nDeviceInd, nCANInd,ReceiveMotor,receivenum,1000);
+	dwRel = Receive(nDeviceType, nDeviceInd, nCANInd,ReceiveMotor,3,1000);
 	int position[3] = {0,0,0};
 	for(int i=0;i<3;i++){
 		position[i] = NS_CommonFunction::ByteToInt(ReceiveMotor[i]);
 	}
-	ROS_INFO_STREAM("rn="<<receivenum<<"dw="<<dwRel);
+	ROS_INFO_STREAM("dw="<<dwRel);
 	ROS_INFO_STREAM(int(ReceiveMotor[2].Data[DI_Register1]));
 	ROS_INFO_STREAM(int(ReceiveMotor[2].Data[DI_Data1]));
 	ROS_INFO_STREAM(int(ReceiveMotor[2].Data[DI_Data1+1]));
@@ -259,12 +258,10 @@ int main(int argc, char **argv)
 	}
 	ROS_INFO_STREAM("disenable motor success");
 
-
-    
-	CloseDevice(nDeviceType, nDeviceInd);
-	ROS_INFO("close can");
-
 	sleep(1);//关太快最后一条会失效
+    
+	CloseDevice(nDeviceType, nDeviceInd);//fanhuizhikanyixia 
+	ROS_INFO("close can");
 
 	return 1;
 }
