@@ -19,13 +19,7 @@ namespace NS_Motor{
     
     DWORD Motor::InitMotors(){
         DWORD dwRel;
-        for(int i=0;i<3;i++){
-            dwRel = CAN.OpenCAN();
-            if(dwRel = 1){                
-                ROS_INFO_STREAM("[CAN]Try open CAN "<<i+1<<" times");
-                break;
-            }
-        }
+        dwRel = CAN.OpenCAN();
         if(dwRel != STATUS_OK){
             return dwRel;
         }
@@ -129,6 +123,7 @@ namespace NS_Motor{
         }
 
         ROS_INFO_STREAM("[Motor]Set speed successfully");
+        ROS_INFO_STREAM("[Motor]V1 = "<<Speed[0]<<"rpm, V2 = "<<Speed[1]<<"rpm, V3 = "<<Speed[2]<<"rpm");
         return dwRel;        
     }
 
@@ -155,9 +150,6 @@ namespace NS_Motor{
             Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR*2*M_PI/ReductionRatio;
         }
 
-        CAN.PrintCAN_OBJ(ReceiveData[0]);
-        CAN.PrintCAN_OBJ(ReceiveData[1]);
-        CAN.PrintCAN_OBJ(ReceiveData[2]);
         ROS_INFO_STREAM("[Motor]Get position successfully ");
         return Position;
     }

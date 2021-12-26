@@ -18,13 +18,20 @@ namespace NS_USBCAN{
 
     DWORD USBCAN::OpenCAN(){
         //open device
-        DWORD dwRel;
-        dwRel = OpenDevice(nDeviceType, nDeviceInd, nReserved); 
-        if (dwRel != STATUS_OK) 
-        { 
-            ROS_ERROR_STREAM("[CAN]Failed to open device");
+        DWORD dwRel = 0;
+        for(int i=0;i<3;i++){
+            dwRel = OpenDevice(nDeviceType, nDeviceInd, nReserved);
+            if (dwRel != STATUS_OK){ 
+                ROS_ERROR_STREAM("[CAN]Failed to open device,try "<<i<<" times");                
+            } 
+            else{
+                break;
+            }
+        }
+        if (dwRel != STATUS_OK){ 
             return 0; 
         } 
+
         ROS_INFO_STREAM("[CAN]Open device successfully");
 
         //initializate CAN
