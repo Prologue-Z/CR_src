@@ -3,6 +3,6 @@ prefix=/home/zhangxu/catkin_ws/src/rs485/build/devel
 Name: rs485
 Description: Description of rs485
 Version: 0.0.0
-Cflags: -I/home/zhangxu/catkin_ws/src/rs485/include
+Cflags: -I/home/zhangxu/catkin_ws/src/rs485/build/devel/include -I/home/zhangxu/catkin_ws/src/rs485/include
 Libs: -L${prefix}/lib -lrs485
 Requires: roscpp serial

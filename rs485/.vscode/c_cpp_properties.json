@@ -7,11 +7,11 @@
             },
             "includePath": [
                 "/opt/ros/melodic/include/**",
+                "/home/zhangxu/catkin_ws/devel/include/**",
                 "/home/zhangxu/catkin_ws/src/rs485/include/**",
                 "/usr/include/**"
             ],
-            "name": "ROS",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "name": "ROS"
         }
     ],
     "version": 4

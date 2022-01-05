@@ -492,6 +492,33 @@ gtest/fast:
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
+src/Class_ContinuumRobot.o: src/Class_ContinuumRobot.cpp.o
+
+.PHONY : src/Class_ContinuumRobot.o
+
+# target to build an object file
+src/Class_ContinuumRobot.cpp.o:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o
+.PHONY : src/Class_ContinuumRobot.cpp.o
+
+src/Class_ContinuumRobot.i: src/Class_ContinuumRobot.cpp.i
+
+.PHONY : src/Class_ContinuumRobot.i
+
+# target to preprocess a source file
+src/Class_ContinuumRobot.cpp.i:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.i
+.PHONY : src/Class_ContinuumRobot.cpp.i
+
+src/Class_ContinuumRobot.s: src/Class_ContinuumRobot.cpp.s
+
+.PHONY : src/Class_ContinuumRobot.s
+
+# target to generate assembly for a file
+src/Class_ContinuumRobot.cpp.s:
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.s
+.PHONY : src/Class_ContinuumRobot.cpp.s
+
 src/Class_Motor.o: src/Class_Motor.cpp.o
 
 .PHONY : src/Class_Motor.o
@@ -638,6 +665,9 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... src/Class_ContinuumRobot.o"
+	@echo "... src/Class_ContinuumRobot.i"
+	@echo "... src/Class_ContinuumRobot.s"
 	@echo "... src/Class_Motor.o"
 	@echo "... src/Class_Motor.i"
 	@echo "... src/Class_Motor.s"

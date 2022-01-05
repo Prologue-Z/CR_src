@@ -19,7 +19,7 @@ namespace NS_USBCAN{
     DWORD USBCAN::OpenCAN(){
         //open device
         DWORD dwRel = 0;
-        for(int i=0;i<3;i++){
+        for(int i=0;i<6;i++){
             dwRel = OpenDevice(nDeviceType, nDeviceInd, nReserved);
             if (dwRel != STATUS_OK){ 
                 ROS_ERROR_STREAM("[CAN]Failed to open device,try "<<i+1<<" times");                

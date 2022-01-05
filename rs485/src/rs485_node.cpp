@@ -9,7 +9,9 @@
  */
 
 #include <ros/ros.h>
-#include <rs485/Class_ForceSensor.h>
+
+#include "rs485/Class_ForceSensor.h"
+#include "rs485/Msg_Force.h"
 
 
 
@@ -17,13 +19,19 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "rs485_node");
     ros::NodeHandle nh("~");
+    ros::Publisher pub = nh.advertise<rs485::Msg_Force>("Topic_Force",1);
     
     NS_ForceSensor::ForceSensor* FS = new NS_ForceSensor::ForceSensor();
     ros::Rate Collect(1);
     double* ForceShow = new double[3];
-    while (1)
+    rs485::Msg_Force ForceMsg;
+    while (ros::ok())
     {
         ForceShow = FS->GetForce();
+        ForceMsg.F1 = ForceShow[0];
+        ForceMsg.F2 = ForceShow[1];
+        ForceMsg.F3 = ForceShow[2];
+        pub.publish(ForceMsg);
         ROS_INFO_STREAM("[RS485]F1 = "<<ForceShow[0]<<"N  F2 = "<<ForceShow[1]<<"N  F3 = "<<ForceShow[2]<<"N");
         Collect.sleep();
     }    

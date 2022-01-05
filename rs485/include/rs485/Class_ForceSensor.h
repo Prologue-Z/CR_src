@@ -1,5 +1,5 @@
 /**
- * @file Class_ForceSensro.h
+ * @file Class_ForceSensor.h
  * @brief Transmitter:ZNLBSQ-TS3-485
  * 
  * @author Zhang Xu (tjuzx2016@126.com)

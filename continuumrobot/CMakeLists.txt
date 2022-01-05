@@ -141,6 +141,7 @@ add_executable(${PROJECT_NAME}_node
 	src/Function_Common.cpp
 	src/Class_Motor.cpp
 	src/Class_USBCAN.cpp
+	src/Class_ContinuumRobot.cpp
 )
 
 ## Rename C++ executable without prefix

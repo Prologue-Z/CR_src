@@ -46,7 +46,7 @@ namespace NS_Motor{
     /**
      * @brief Set the Speed object
      * 
-     * @param Speed 
+     * @param Speed rpm
      * @return DWORD DWORD 1-success 0-failure
      */
     DWORD SetSpeed(double Speed[3]);

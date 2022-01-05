@@ -8,36 +8,68 @@
  * @copyright Copyright (c) 2021 Key Laboratory of Mechanism Theory and Equipment Design of the Ministry of Education, School of Mechanical Engineering, Tianjin University, China
  */
 
+#include <math.h>
+#define PI M_PI
 #include <ros/ros.h>
 #include "ECanVci.h"
 #include "continuumrobot/Class_Motor.h"
+#include "continuumrobot/Class_ContinuumRobot.h"
+//#include "rs485/Msg_Force.h"
 
-int main(int argc, char **argv)
-{
+// void CallBack(const rs485::Msg_Force::ConstPtr& Force){
+// 	ROS_INFO_STREAM("[CR]Sub get msg.F1 = "<<Force->F1<<"N,F2 = "<<Force->F2<<"N,F3 = "<<Force->F3<<"N.");
+// }
+
+int main(int argc, char **argv){
     ros::init(argc, argv, "continuumrobot_node");
     ros::NodeHandle nh("~"); 
 
-	DWORD dwRel;
-	NS_Motor::Motor Motors;
-	dwRel = Motors.InitMotors();
-	if(dwRel != STATUS_OK){
-		return dwRel;
-	}
+	int T = 10;
+	int F = 30;
+	double C_D[2] = {PI/3,PI/2};
+	//double C_D[2] = {0,PI/2};
+	ROS_INFO_STREAM("test");
+	NS_ContinuumRobot::ContinuumRobot CR;
+	int flag = CR.InitRobot();
 
-	dwRel = Motors.EnableMotors();
-	if(dwRel != STATUS_OK){
-		return dwRel;
+	if(flag == 0){
+		ROS_ERROR_STREAM("[ContinuuumRobot] init robot fail");
+		return 0;
 	}
-	Motors.SetSpeedMode();
-	double Speed[3] = {-60,-30,-15};
-	Motors.SetSpeed(Speed);
-	sleep(10);
-	for(int i=0;i<3;i++){Speed[i] = 0;}
-	Motors.SetSpeed(Speed);
-	double* P = new double[3];
-	P = Motors.GetPosition();
-	ROS_INFO_STREAM("p1="<<P[0]<<"r, p2="<<P[1]<<"r, p3="<<P[2]<<"r");
-	Motors.CloseMotors();
+	CR.ToConfiguration(C_D,T,F);
+
+	// ros::Rate Collect(1);
+	// DWORD dwRel;
+	// NS_Motor::Motor Motors;
+
+	// dwRel = Motors.InitMotors();
+	// if(dwRel != STATUS_OK){
+	// 	return dwRel;
+	// }
+	// dwRel = Motors.EnableMotors();
+	// if(dwRel != STATUS_OK){
+	// 	return dwRel;
+	// }
+	// Motors.SetSpeedMode();
+	
+
+	// int flag = 1;
+	// while(ros::ok()&&flag<=10){
+	// 	double* P = new double[3];
+	// 	P = Motors.GetPosition();
+	// 	ROS_INFO_STREAM("p1="<<P[0]<<"r, p2="<<P[1]<<"r, p3="<<P[2]<<"r");
+	// 	ros::Subscriber sub = nh.subscribe("Topic_Force",1,CallBack);
+		
+	// 	double Speed[3] = {-60*flag*0.1,-30*flag*0.1,-15*flag*0.1};
+	// 	Motors.SetSpeed(Speed);
+
+	// 	flag++;
+
+	// 	ros::spinOnce();
+	// 	Collect.sleep();
+	// }
+
+	// Motors.CloseMotors();
 
 	return 1;
 }

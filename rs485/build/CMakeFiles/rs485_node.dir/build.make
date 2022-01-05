@@ -175,8 +175,9 @@ devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/librosconsole_log4cxx.so
 devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/librosconsole_backend_interface.so
 devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
 devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/libboost_regex.so
-devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/libroscpp_serialization.so
 devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/libxmlrpcpp.so
+devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/libserial.so
+devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/libroscpp_serialization.so
 devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/librostime.so
 devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/libcpp_common.so
 devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/libboost_system.so
@@ -186,7 +187,6 @@ devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
 devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
 devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/libpthread.so
 devel/lib/rs485/rs485_node: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-devel/lib/rs485/rs485_node: /opt/ros/melodic/lib/libserial.so
 devel/lib/rs485/rs485_node: CMakeFiles/rs485_node.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhangxu/catkin_ws/src/rs485/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable devel/lib/rs485/rs485_node"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rs485_node.dir/link.txt --verbose=$(VERBOSE)

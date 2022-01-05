@@ -153,12 +153,37 @@ CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o.provides: CMakeFiles/c
 CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o.provides.build: CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o
 
 
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o: CMakeFiles/continuumrobot_node.dir/flags.make
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o: ../src/Class_ContinuumRobot.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhangxu/catkin_ws/src/continuumrobot/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o -c /home/zhangxu/catkin_ws/src/continuumrobot/src/Class_ContinuumRobot.cpp
+
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.i"
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zhangxu/catkin_ws/src/continuumrobot/src/Class_ContinuumRobot.cpp > CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.i
+
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.s"
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zhangxu/catkin_ws/src/continuumrobot/src/Class_ContinuumRobot.cpp -o CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.s
+
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.requires:
+
+.PHONY : CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.requires
+
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.provides: CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.requires
+	$(MAKE) -f CMakeFiles/continuumrobot_node.dir/build.make CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.provides.build
+.PHONY : CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.provides
+
+CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.provides.build: CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o
+
+
 # Object files for target continuumrobot_node
 continuumrobot_node_OBJECTS = \
 "CMakeFiles/continuumrobot_node.dir/src/continuumrobot_node.cpp.o" \
 "CMakeFiles/continuumrobot_node.dir/src/Function_Common.cpp.o" \
 "CMakeFiles/continuumrobot_node.dir/src/Class_Motor.cpp.o" \
-"CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o"
+"CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o" \
+"CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o"
 
 # External object files for target continuumrobot_node
 continuumrobot_node_EXTERNAL_OBJECTS =
@@ -167,6 +192,7 @@ devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir
 devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir/src/Function_Common.cpp.o
 devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir/src/Class_Motor.cpp.o
 devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o
+devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o
 devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir/build.make
 devel/lib/continuumrobot/continuumrobot_node: /opt/ros/melodic/lib/libroscpp.so
 devel/lib/continuumrobot/continuumrobot_node: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
@@ -186,9 +212,8 @@ devel/lib/continuumrobot/continuumrobot_node: /usr/lib/x86_64-linux-gnu/libboost
 devel/lib/continuumrobot/continuumrobot_node: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
 devel/lib/continuumrobot/continuumrobot_node: /usr/lib/x86_64-linux-gnu/libpthread.so
 devel/lib/continuumrobot/continuumrobot_node: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-devel/lib/continuumrobot/continuumrobot_node: ../lib/libECanVci.so.1
 devel/lib/continuumrobot/continuumrobot_node: CMakeFiles/continuumrobot_node.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhangxu/catkin_ws/src/continuumrobot/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable devel/lib/continuumrobot/continuumrobot_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhangxu/catkin_ws/src/continuumrobot/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable devel/lib/continuumrobot/continuumrobot_node"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/continuumrobot_node.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -200,6 +225,7 @@ CMakeFiles/continuumrobot_node.dir/requires: CMakeFiles/continuumrobot_node.dir/
 CMakeFiles/continuumrobot_node.dir/requires: CMakeFiles/continuumrobot_node.dir/src/Function_Common.cpp.o.requires
 CMakeFiles/continuumrobot_node.dir/requires: CMakeFiles/continuumrobot_node.dir/src/Class_Motor.cpp.o.requires
 CMakeFiles/continuumrobot_node.dir/requires: CMakeFiles/continuumrobot_node.dir/src/Class_USBCAN.cpp.o.requires
+CMakeFiles/continuumrobot_node.dir/requires: CMakeFiles/continuumrobot_node.dir/src/Class_ContinuumRobot.cpp.o.requires
 
 .PHONY : CMakeFiles/continuumrobot_node.dir/requires
 

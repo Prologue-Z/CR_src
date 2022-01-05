@@ -177,7 +177,7 @@ foreach(library ${libraries})
   endif()
 endforeach()
 
-set(rs485_EXPORTED_TARGETS "")
+set(rs485_EXPORTED_TARGETS "rs485_generate_messages_cpp;rs485_generate_messages_eus;rs485_generate_messages_lisp;rs485_generate_messages_nodejs;rs485_generate_messages_py")
 # create dummy targets for exported code generation targets to make life of users easier
 foreach(t ${rs485_EXPORTED_TARGETS})
   if(NOT TARGET ${t})
@@ -214,7 +214,7 @@ foreach(depend ${depends})
   list(APPEND rs485_EXPORTED_TARGETS ${${rs485_dep}_EXPORTED_TARGETS})
 endforeach()
 
-set(pkg_cfg_extras "")
+set(pkg_cfg_extras "rs485-msg-extras.cmake")
 foreach(extra ${pkg_cfg_extras})
   if(NOT IS_ABSOLUTE ${extra})
     set(extra ${rs485_DIR}/${extra})
