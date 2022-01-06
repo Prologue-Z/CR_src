@@ -58,10 +58,13 @@ namespace NS_Motor{
      */
     double * GetPosition();
 
+    DWORD ClearPosition();
+
     DWORD CloseMotors();
 
     private:
     NS_USBCAN::USBCAN CAN;
+    int WaitTime_CAN = 2000;//ms
     CAN_OBJ SendData[3];
     CAN_OBJ ReceiveData[3];
     const double ReductionRatio = 42.3;

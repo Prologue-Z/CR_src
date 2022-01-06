@@ -43,10 +43,14 @@ namespace NS_Motor{
         }
         
         dwRel = CAN.SendData(SendData,3);
-        dwRel = CAN.ReceiveData(ReceiveData,3,1000);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't send data, failed to enable motors");
+            return 0;
+        }
 
-        if(dwRel < 3&&ReceiveData[0].Data[1]!=0x1b&&ReceiveData[1].Data[1]!=0x1b&&ReceiveData[2].Data[1]!=0x1b){
-            ROS_ERROR_STREAM("[Motor]Send data fail,failed to enable motors");
+        dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't receive data,failed to enable motors");
             CAN.CloseCAN(); 
             return 0; 
         }
@@ -66,10 +70,14 @@ namespace NS_Motor{
         }
         
         dwRel = CAN.SendData(SendData,3);
-        dwRel = CAN.ReceiveData(ReceiveData,3,1000);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't send data, failed to disenable motors");
+            return 0;
+        }
 
-        if(dwRel < 3&&ReceiveData[0].Data[1]!=0x1b&&ReceiveData[1].Data[1]!=0x1b&&ReceiveData[2].Data[1]!=0x1b){
-            ROS_ERROR_STREAM("[Motor]Send data fail,failed to disenable motors");
+        dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't receive data,failed to disenable motors");
             CAN.CloseCAN(); 
             return 0; 
         }
@@ -92,10 +100,14 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.SendData(SendData,3);
-        dwRel = CAN.ReceiveData(ReceiveData,3,1000);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't send data, failed to set speed mode");
+            return 0;
+        }
 
-        if(dwRel < 3&&ReceiveData[0].Data[1]!=0x1b&&ReceiveData[1].Data[1]!=0x1b&&ReceiveData[2].Data[1]!=0x1b){
-            ROS_ERROR_STREAM("[Motor]Send data fail,failed to set speed mode");
+        dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't receive data,failed to set speed mode");
             CAN.CloseCAN(); 
             return 0; 
         }
@@ -115,17 +127,20 @@ namespace NS_Motor{
             NS_CommonFunction::IntToBYTE(int(WriteValue[i]*ReductionRatio),&SendData[i].Data[3]);
         }
 
-        dwRel = CAN.SendData(SendData,3);       
-        dwRel = CAN.ReceiveData(ReceiveData,3,1000);
-
-        if(dwRel < 3&&ReceiveData[0].Data[1]!=0x1b&&ReceiveData[1].Data[1]!=0x1b&&ReceiveData[2].Data[1]!=0x1b){
-            ROS_ERROR_STREAM("[Motor]Send data fail,failed to set speed");
-            CAN.CloseCAN(); 
-            return 0; 
+        dwRel = CAN.SendData(SendData,3);   
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor] Can't send data, failed to set speed");
+            return 0;
         }
 
-        ROS_INFO_STREAM("[Motor]Set speed successfully");
-        ROS_INFO_STREAM("[Motor]V1 = "<<Speed[0]<<"rpm, V2 = "<<Speed[1]<<"rpm, V3 = "<<Speed[2]<<"rpm");
+        dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor]Send data fail,failed to set speed");
+            return 0;
+        }
+
+        //ROS_INFO_STREAM("[Motor]Set speed successfully");
+        ROS_INFO_STREAM("[Motor]Set V1 = "<<Speed[0]<<"rpm, V2 = "<<Speed[1]<<"rpm, V3 = "<<Speed[2]<<"rpm");
         return dwRel;        
     }
 
@@ -140,8 +155,12 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.SendData(SendData,3);
-        dwRel = CAN.ReceiveData(ReceiveData,3,1000);
+        if(dwRel<3){
+            ROS_ERROR_STREAM("[Motor] Can't send data, failed to get position");
+            return 0;
+        }
 
+        dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
         if(dwRel < 3){
             ROS_ERROR_STREAM("[Motor]Receive data fail,failed to get position");
             CAN.CloseCAN(); 
@@ -152,11 +171,31 @@ namespace NS_Motor{
             Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR/ReductionRatio;
         }
 
-        ROS_INFO_STREAM("[Motor]Get position successfully ");
+        //ROS_INFO_STREAM("[Motor]Get position successfully ");
+        ROS_INFO_STREAM("[Motor] Position = "<<Position[0]<<" "<<Position[1]<<" "<<Position[2]);
         return Position;
     }
 
-
+    DWORD Motor::ClearPosition(){
+        DWORD dwRel;
+        InitSendData();
+        for(int i=0;i<3;i++){
+            SendData[i].Data[2] = 0x4c;
+        }
+        dwRel = CAN.SendData(SendData,3);
+        if(dwRel<3){
+            ROS_ERROR_STREAM("[Motor] Can't send data, failed to clear position");
+            return 0;
+        }
+        dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
+        if(dwRel < 3){
+            ROS_ERROR_STREAM("[Motor]Receive data fail, failed to clear position");
+            CAN.CloseCAN(); 
+            return 0; 
+        }
+        ROS_INFO_STREAM("[Motor] Clear position successfully");
+        return 1;
+    }
 
 
     //private

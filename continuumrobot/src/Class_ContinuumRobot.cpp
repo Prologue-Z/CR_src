@@ -22,47 +22,7 @@ namespace NS_ContinuumRobot {
         Motor.CloseMotors();
     }
 
-    int ContinuumRobot::ToConfiguration(double Configuration_Desired[2],int T,int F){
-        MatrixXd Velocity_Path;
-        int k =0;
-        ros::Rate F_Control(F);
-        Vector3d Velocity;
 
-        Velocity_Path = TrajectoryGeneration(Configuration_Desired[0],Configuration_Desired[1],T,F);
-        Vector2d C,dC;
-        DWORD dwRel;
-        while(k<T*F){
-            ROS_INFO_STREAM("[Continuum Robot]k = "<<k);
-            ResetRobot();
-            // if(Configuration(0)>PI){
-            //     ROS_ERROR_STREAM("[Continuum Robot] Configuration out of range");
-            //     break;
-            //     return 0;
-            // }
-            if (k==0){
-                C << Configuration(0),Configuration(1);
-            }
-            else{
-                dC<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F;
-                C = C + dC;
-            }
-            Velocity = JacobianLC*(Velocity_Path.col(k) + 5*(C-Configuration));
-            ROS_INFO_STREAM("[test]dv = "<<Velocity(0)<<Velocity(1)<<Velocity(2));
-
-            dwRel = SetVelocity(Velocity);
-            if(dwRel==0){
-                break;
-                ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
-                return 0;
-            }
-
-            k++;
-            F_Control.sleep();            
-        }
-
-        ROS_INFO_STREAM("[ContinuumRobot] To Configuration:"<<Configuration_Desired[0]<<" "<<Configuration_Desired[1]<<" successfull");
-        return 1;
-    }
 
     int ContinuumRobot::InitRobot(){
         FILE *InitTxt = NULL;
@@ -98,6 +58,91 @@ namespace NS_ContinuumRobot {
         ResetRobot();
         return 1;
     }
+
+    int ContinuumRobot::ClearMotorPosition(){
+        int dwRel;
+        dwRel = Motor.ClearPosition();
+        if(dwRel == 0){
+            ROS_ERROR_STREAM("[Continuum Robot] Failed to clear position of motors");
+            return 0;
+        }
+        ROS_INFO_STREAM("[Continuum Robot] Clear position of motors successfully");
+        return 1;
+    }
+
+    int ContinuumRobot::ToConfiguration(double Configuration_Desired[2],int T,int F){
+        MatrixXd Velocity_Path;
+        int k =0;
+        ros::Rate F_Control(F);
+        Vector3d Velocity;
+
+        Velocity_Path = TrajectoryGeneration(Configuration_Desired[0],Configuration_Desired[1],T,F);
+        Vector2d C,dC;
+        DWORD dwRel;
+        while(k<T*F){
+            ROS_INFO_STREAM("[Continuum Robot]k = "<<k);
+            ResetRobot();
+            if (k==0){
+                C << Configuration(0),Configuration(1);
+            }
+            else{
+                dC<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F;
+                C = C + dC;
+            }
+            Velocity = JacobianLC*(Velocity_Path.col(k) + 5*(C-Configuration));
+            ROS_INFO_STREAM("[test]Velocity_L = "<<Velocity(0)<<" "<<Velocity(1)<<" "<<Velocity(2));
+
+            dwRel = SetVelocity(Velocity);
+            if(dwRel==0){
+                break;
+                ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
+                return 0;
+            }
+
+            k++;
+            F_Control.sleep();            
+        }
+
+        ROS_INFO_STREAM("[ContinuumRobot] To Configuration:"<<Configuration_Desired[0]<<" "<<Configuration_Desired[1]<<" successfull");
+        return 1;
+    }
+
+    int ContinuumRobot::ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F){
+        MatrixXd Velocity_Path;
+        int k =0;
+        ros::Rate F_Control(F);
+        Vector3d Velocity;
+
+        Velocity_Path = TrajectoryGeneration(Length_DrivingWire_Desired[0],Length_DrivingWire_Desired[1],Length_DrivingWire_Desired[2],T,F);
+        Vector3d L,dL;
+        DWORD dwRel;
+        while(k<T*F){
+            ROS_INFO_STREAM("[Continuum Robot]k = "<<k);
+            ResetRobot();
+            if (k==0){
+                L << Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2);
+            }
+            else{
+                dL<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F,Velocity_Path(2,k)/F;
+                L = L + dL;
+            }
+            Velocity = (Velocity_Path.col(k) + 5*(L-Length_DrivingWire));
+            ROS_INFO_STREAM("[test]Velocity_L = "<<Velocity(0)<<" "<<Velocity(1)<<" "<<Velocity(2));
+
+            dwRel = SetVelocity(Velocity);
+            if(dwRel==0){
+                ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
+                return 0;
+            }
+
+            k++;
+            F_Control.sleep();            
+        }
+        ROS_INFO_STREAM("[ContinuumRobot] To Length_DrivingWire:"<<Length_DrivingWire_Desired[0]<<" "<<Length_DrivingWire_Desired[1]<<" "<<Length_DrivingWire_Desired[2]<<" successfull");
+        return 1;
+    }
+
+
     //private
     void ContinuumRobot::ResetRobot(){
         //Reset position in three space
@@ -121,10 +166,11 @@ namespace NS_ContinuumRobot {
         double* R_Motor;
         R_Motor = Motor.GetPosition();
         if(R_Motor)
-        //ROS_INFO_STREAM("[test] lds = "<<Length_DrivingWire__Startup(0)<<Length_DrivingWire__Startup(1)<<Length_DrivingWire__Startup(2));
         for(int i=0;i<3;i++){
             Length_DrivingWire(i) = Length_DrivingWire__Startup(i) + R_Motor[i]*ScrewLead;
         }
+        ROS_INFO_STREAM("[test] ld = "<<Length_DrivingWire(0)<<" "<<Length_DrivingWire(1)<<" "<<Length_DrivingWire(2));
+
     }
 
     void ContinuumRobot::ResetConfiguration(){        
@@ -220,9 +266,23 @@ namespace NS_ContinuumRobot {
         return invJ;
     }
 
-    MatrixXd  ContinuumRobot::TrajectoryGeneration(double Theta_Desired, double Psi_Desired,int T,int F){
-        double dTheta = Theta_Desired - Configuration(0);
-        double dPsi = Psi_Desired - Configuration(1);
+    int ContinuumRobot::SetVelocity(Vector3d Velocity){
+        DWORD dwRel;
+        double Speed_Motor[3];
+        for(int i=0;i<3;i++){
+            Speed_Motor[i] = Velocity(i)/ScrewLead*60;//rpm->m/s
+        }
+        dwRel = Motor.SetSpeed(Speed_Motor);
+        if(dwRel == 0){
+            ROS_ERROR_STREAM("[Continuum Robot] Set veolocity fail");
+            return 0;
+        }
+        return 1;
+    }
+
+        MatrixXd  ContinuumRobot::TrajectoryGeneration(double Configuration_Desired_0,double Configuration_Desired_1,int T,int F){
+        double dTheta = Configuration_Desired_0 - Configuration(0);
+        double dPsi = Configuration_Desired_1 - Configuration(1);
         double A = dTheta/T;
         double B = dPsi/T;
         double Omega = 2*M_PI/T;
@@ -236,23 +296,26 @@ namespace NS_ContinuumRobot {
         Tra.row(1)=trab.matrix().transpose();
         return Tra;
     }
-
-    int ContinuumRobot::SetVelocity(Vector3d Velocity){
-        //if(Velocity.norm()>0.1){
-        //    ROS_ERROR_STREAM("[Continuum Robot] Desired Velocity out of range");
-        //    return 0;
-        //}
-        DWORD dwRel;
-        double Speed_Motor[3];
-        for(int i=0;i<3;i++){
-            Speed_Motor[i] = Velocity(i)/ScrewLead*60;//rpm->m/s
-        }
-        dwRel = Motor.SetSpeed(Speed_Motor);
-        if(dwRel == 0){
-            ROS_ERROR_STREAM("[Continuum Robot] Set veolocity fail");
-            return 0;
-        }
-        return 1;
+    MatrixXd  ContinuumRobot::TrajectoryGeneration(double Length_DrivingWire_Desired_0,double Length_DrivingWire_Desired_1,double Length_DrivingWire_Desired_2,int T,int F){
+        double dL1 = Length_DrivingWire_Desired_0 - Length_DrivingWire(0);
+        double dL2 = Length_DrivingWire_Desired_1 - Length_DrivingWire(1);
+        double dL3 = Length_DrivingWire_Desired_2 - Length_DrivingWire(2);
+        double A = dL1/T;
+        double B = dL2/T;
+        double C = dL3/T;
+        double Omega = 2*M_PI/T;
+        ArrayXd t=ArrayXd::LinSpaced(T*F,0,T);
+        ArrayXd a=ArrayXd::LinSpaced(T*F,A,A);
+        ArrayXd b=ArrayXd::LinSpaced(T*F,B,B);
+        ArrayXd c=ArrayXd::LinSpaced(T*F,C,C);
+        ArrayXd traa=(Omega*t).cos()*(-A)+a;
+        ArrayXd trab=(Omega*t).cos()*(-B)+b;
+        ArrayXd trac=(Omega*t).cos()*(-C)+c;
+        MatrixXd Tra(3,T*F);
+        Tra.row(0)=traa.matrix().transpose();
+        Tra.row(1)=trab.matrix().transpose();
+        Tra.row(2)=trac.matrix().transpose();
+        return Tra;
     }
 
 }

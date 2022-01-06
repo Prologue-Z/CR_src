@@ -95,6 +95,10 @@ namespace NS_USBCAN{
     DWORD USBCAN::SendData(CAN_OBJ *Data,int Num){
         DWORD dwRel;
         dwRel = Transmit(nDeviceType, nDeviceInd, nCANInd,Data,Num);
+        if(dwRel<Num){
+            ROS_ERROR_STREAM("[CAN]Failed to send data");
+            return 0;
+        }
         return dwRel;
     }
 
@@ -103,6 +107,10 @@ namespace NS_USBCAN{
         int Receivenum=0;
         while(Receivenum < Num){Receivenum = GetReceiveNum(nDeviceType, nDeviceInd, nCANInd);};
         dwRel = Receive(nDeviceType, nDeviceInd, nCANInd,Data,Num,WaitTime);
+        if(dwRel<Num){
+            ROS_ERROR_STREAM("[CAN]Failed to recive data");
+            return 0;
+        }
         return dwRel;
     }
 

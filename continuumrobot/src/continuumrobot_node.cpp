@@ -24,19 +24,27 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "continuumrobot_node");
     ros::NodeHandle nh("~"); 
 
-	int T = 10;
-	int F = 30;
-	double C_D[2] = {PI/3,PI/2};
-	//double C_D[2] = {0,PI/2};
-	ROS_INFO_STREAM("test");
+	int T = 5;
+	int F = 10;//10-20
+
 	NS_ContinuumRobot::ContinuumRobot CR;
 	int flag = CR.InitRobot();
-
 	if(flag == 0){
-		ROS_ERROR_STREAM("[ContinuuumRobot] init robot fail");
+		ROS_ERROR_STREAM("[continuuumrobot_node] init robot fail");
 		return 0;
 	}
-	CR.ToConfiguration(C_D,T,F);
+
+	flag = CR.ClearMotorPosition();
+	if(flag == 0){
+		ROS_ERROR_STREAM("[continuuumrobot_node] clear position of motors fail");
+		return 0;
+	}
+
+	double L_D[3] = {0.3,0.3,0.3};
+	CR.ToLength_DrivingWire(L_D,T,F);
+
+	// double C_D[2] = {PI/3,0};
+	// CR.ToConfiguration(C_D,T,F);
 
 	// ros::Rate Collect(1);
 	// DWORD dwRel;

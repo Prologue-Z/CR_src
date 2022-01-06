@@ -32,14 +32,18 @@ namespace NS_ContinuumRobot {
          */
         ~ContinuumRobot();
 
-        int ToConfiguration(double Configuration_Desired[2],int T,int F);
-
         /**
          * @brief init Length_DrivingWire__Startup,DrivingWire_Length; set Motor->reset robot
          * 
          * @return int 1-success 0-failure
          */
         int InitRobot();
+
+        int ClearMotorPosition();
+
+
+        int ToConfiguration(double Configuration_Desired[2],int T,int F);
+        int ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F);
 
         private:
         const double Length_Backbone = 0.3;
@@ -79,7 +83,8 @@ namespace NS_ContinuumRobot {
 
         MatrixXd pinv(MatrixXd J);
 
-        MatrixXd TrajectoryGeneration(double Theta_Desired, double Psi_Desired,int T,int F);
+        MatrixXd TrajectoryGeneration(double Configuration_Desired_0,double Configuration_Desired_1,int T,int F);
+        MatrixXd TrajectoryGeneration(double Length_DrivingWire_Desired_0,double Length_DrivingWire_Desired_1,double Length_DrivingWire_Desired_2,int T,int F);
 
 
 
