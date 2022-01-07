@@ -280,7 +280,7 @@ namespace NS_ContinuumRobot {
         return 1;
     }
 
-        MatrixXd  ContinuumRobot::TrajectoryGeneration(double Configuration_Desired_0,double Configuration_Desired_1,int T,int F){
+    MatrixXd  ContinuumRobot::TrajectoryGeneration(double Configuration_Desired_0,double Configuration_Desired_1,int T,int F){
         double dTheta = Configuration_Desired_0 - Configuration(0);
         double dPsi = Configuration_Desired_1 - Configuration(1);
         double A = dTheta/T;
@@ -296,6 +296,7 @@ namespace NS_ContinuumRobot {
         Tra.row(1)=trab.matrix().transpose();
         return Tra;
     }
+    
     MatrixXd  ContinuumRobot::TrajectoryGeneration(double Length_DrivingWire_Desired_0,double Length_DrivingWire_Desired_1,double Length_DrivingWire_Desired_2,int T,int F){
         double dL1 = Length_DrivingWire_Desired_0 - Length_DrivingWire(0);
         double dL2 = Length_DrivingWire_Desired_1 - Length_DrivingWire(1);

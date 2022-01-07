@@ -58,9 +58,25 @@ namespace NS_Motor{
      */
     double * GetPosition();
 
+    /**
+     * @brief clear position of motors to 0
+     * 
+     * @return DWORD 1-success 0-fail
+     */
     DWORD ClearPosition();
 
+    /**
+     * @brief close Motors:disenable motors->close CAN
+     * 
+     * @return DWORD 1-success 0-fail
+     */
     DWORD CloseMotors();
+
+    /**
+     * @brief Forced shutdown when wrong->close CAN
+     * 
+     */
+    void ForcedShutdown();
 
     private:
     NS_USBCAN::USBCAN CAN;
@@ -76,6 +92,14 @@ namespace NS_Motor{
      * 
      */
     void InitSendData();
+
+    /**
+     * @brief check receivedate is right
+     * 
+     * @param ReadWrite 0-read 1-write
+     * @return DWORD 
+     */
+    DWORD DataCheck(int ReadWrite);//0-read 1-write
 
     };
 
