@@ -49,9 +49,9 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
-        if(dwRel < 3){
+        if(DataCheck(1)==0){
             ROS_ERROR_STREAM("[Motor] Can't receive data,failed to enable motors");
-            CAN.CloseCAN(); 
+            ForcedShutdown();  
             return 0; 
         }
 
@@ -76,9 +76,9 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
-        if(dwRel < 3){
+        if(DataCheck(1)==0){
             ROS_ERROR_STREAM("[Motor] Can't receive data,failed to disenable motors");
-            CAN.CloseCAN(); 
+            ForcedShutdown();  
             return 0; 
         }
 
@@ -106,9 +106,9 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
-        if(dwRel < 3){
+        if(DataCheck(1)==0){
             ROS_ERROR_STREAM("[Motor] Can't receive data,failed to set speed mode");
-            CAN.CloseCAN(); 
+            ForcedShutdown();  
             return 0; 
         }
 
@@ -134,8 +134,9 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
-        if(dwRel < 3){
+        if(DataCheck(1)==0){
             ROS_ERROR_STREAM("[Motor]Send data fail,failed to set speed");
+            ForcedShutdown();             
             return 0;
         }
 
@@ -151,7 +152,7 @@ namespace NS_Motor{
         for(int i=0;i<3;i++){
             SendData[i].Data[1] = 0x2a;//read
             SendData[i].Data[2] = 0xe8;
-            SendData[i].Data[5] = 0xe9;         
+            SendData[i].Data[5] = 0xe9;    
         }
 
         dwRel = CAN.SendData(SendData,3);
@@ -161,9 +162,9 @@ namespace NS_Motor{
         }
 
         dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
-        if(dwRel < 3){
+        if(DataCheck(0)==0){
             ROS_ERROR_STREAM("[Motor]Receive data fail,failed to get position");
-            CAN.CloseCAN(); 
+            ForcedShutdown();
             return 0; 
         }
 
@@ -171,7 +172,6 @@ namespace NS_Motor{
             Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR/ReductionRatio;
         }
 
-        //ROS_INFO_STREAM("[Motor]Get position successfully ");
         ROS_INFO_STREAM("[Motor] Position = "<<Position[0]<<" "<<Position[1]<<" "<<Position[2]);
         return Position;
     }
@@ -188,15 +188,36 @@ namespace NS_Motor{
             return 0;
         }
         dwRel = CAN.ReceiveData(ReceiveData,3,WaitTime_CAN);
-        if(dwRel < 3){
+        if(DataCheck(1)==0){
             ROS_ERROR_STREAM("[Motor]Receive data fail, failed to clear position");
-            CAN.CloseCAN(); 
+            ForcedShutdown();
             return 0; 
         }
         ROS_INFO_STREAM("[Motor] Clear position successfully");
         return 1;
     }
 
+    void Motor::ForcedShutdown(){
+        DWORD dwRel;
+        const int TryTimes = 10;
+        InitSendData();
+        for(int i=0;i<3;i++){
+            SendData[i].Data[2] = 0x4d;
+        }
+        
+        for(int i=0;i<TryTimes;i++){
+            dwRel = CAN.SendData(SendData,3);
+            if(dwRel==3){
+                ROS_ERROR_STREAM("[Motor] Force shutdown motors successfully"); 
+                break;
+            }
+            else{
+                ROS_ERROR_STREAM("[Motor] Fail to send data,try to force shutdown motors "<<i+1<<" time"); 
+            }            
+        }
+        ROS_ERROR_STREAM("[Motors] Program running error, forced shutdown, please turn off the power!!!");
+        CAN.CloseCAN();
+    }
 
     //private
     void Motor::InitSendData(){
@@ -209,6 +230,40 @@ namespace NS_Motor{
             SendData[i].ExternFlag = 0;
             memcpy(SendData[i].Data,initData,sizeof(initData));
         }
+    }
+
+    DWORD Motor::DataCheck(int ReadWrite){
+        int flag[3] = {0,0,0};
+        for(int i=0;i<3;i++){
+            if(ReceiveData[i].ID != i+1){
+                ROS_ERROR_STREAM("[Motors] ID = "<<i+1<<" of receive data is fales");
+                return 0;
+            }
+
+            if(ReadWrite == 0){//read
+                flag[i] |= ReceiveData[i].Data[0]^SendData[i].Data[0];
+                flag[i] |= ReceiveData[i].Data[1]^(0x2b);
+                flag[i] |= ReceiveData[i].Data[2]^SendData[i].Data[2];
+                flag[i] |= ReceiveData[i].Data[5]^SendData[i].Data[5];
+            }
+            else{//write
+                flag[i] |= ReceiveData[i].Data[0]^SendData[i].Data[0];
+                flag[i] |= ReceiveData[i].Data[1]^(0x1b);
+                flag[i] |= ReceiveData[i].Data[2]^SendData[i].Data[2];
+                flag[i] |= ReceiveData[i].Data[3]^SendData[i].Data[3];
+                flag[i] |= ReceiveData[i].Data[4]^SendData[i].Data[4];
+                flag[i] |= ReceiveData[i].Data[5]^SendData[i].Data[5];
+                flag[i] |= ReceiveData[i].Data[6]^SendData[i].Data[6];
+                flag[i] |= ReceiveData[i].Data[7]^SendData[i].Data[7];
+
+            }           
+
+        }
+        if(flag[0]|flag[1]|flag[2]!=0){
+            ROS_ERROR_STREAM("[Motor] Receive wrong data"<<flag[0]<<" "<<flag[1]<<" "<<flag[2]);
+            return 0;
+        }
+        return 1;
     }
 
 }
