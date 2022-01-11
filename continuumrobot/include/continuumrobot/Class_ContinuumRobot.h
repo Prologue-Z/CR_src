@@ -71,7 +71,7 @@ namespace NS_ContinuumRobot {
         private:
         const double Length_Backbone = 0.3;
         const double Radius = 0.015;
-        const double Beta = PI/3;
+        const double Beta = 2*PI/3;
         const double ScrewLead = -0.001;
 
         //const char* FileAddress = "../doc/Length_Record.txt";
@@ -87,14 +87,21 @@ namespace NS_ContinuumRobot {
         Matrix<double,3,3> JacobianLX;// Jacobian dL1dX
 
         NS_Motor::Motor Motor;
+        
+        /**
+         * @brief Set the Velocity of each lead screw
+         * 
+         * @param Velocity 
+         * @return int 0-fail 1-success
+         */
+        int SetVelocity(Vector3d Velocity);
 
         /**
-         * @brief 
+         * @brief Reset every paramters of the continuum robot:ResetLength_DrivingWire->ResetConfiguration
          * 
          */
         void ResetRobot();
 
-        int SetVelocity(Vector3d Velocity);
 
         void ResetLength_DrivingWire();
         void ResetConfiguration();
@@ -104,12 +111,32 @@ namespace NS_ContinuumRobot {
         void ResetJacobianLC();
         void ResetJacobianLX();
 
+        double* ConfigurationToLength_DrivingWire(double Configuration_Desired[2]);
+        
+        /**
+         * @brief get the pseudo inverse of a matrix
+         * 
+         * @param J 
+         * @return MatrixXd 
+         */
         MatrixXd pinv(MatrixXd J);
 
+        /**
+         * @brief  trajectory planning of velocity
+         * @ref Li，Minhan - 机器人控制系统与程序技术文档.PDF
+         * 
+         * @param T motion time
+         * @param F control frequency
+         * @return MatrixXd desired velocity matrix at each time point
+         */
         MatrixXd TrajectoryGeneration(double Configuration_Desired_0,double Configuration_Desired_1,int T,int F);
         MatrixXd TrajectoryGeneration(double Length_DrivingWire_Desired_0,double Length_DrivingWire_Desired_1,double Length_DrivingWire_Desired_2,int T,int F);
 
-
+        /**
+         * @brief Reset Length_record.txt from @param Length_DrivingWire
+         * 
+         */
+        void ResetDoc_Length();
 
     };
     

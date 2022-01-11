@@ -20,8 +20,8 @@ namespace NS_ContinuumRobot {
 
     ContinuumRobot::~ContinuumRobot(){
         Motor.CloseMotors();
+        ResetDoc_Length();
     }
-
 
 
     int ContinuumRobot::InitRobot(){
@@ -71,39 +71,15 @@ namespace NS_ContinuumRobot {
     }
 
     int ContinuumRobot::ToConfiguration(double Configuration_Desired[2],int T,int F){
-        MatrixXd Velocity_Path;
-        int k =0;
-        ros::Rate F_Control(F);
-        Vector3d Velocity;
-
-        Velocity_Path = TrajectoryGeneration(Configuration_Desired[0],Configuration_Desired[1],T,F);
-        Vector2d C,dC;
-        DWORD dwRel;
-        while(k<T*F){
-            ROS_INFO_STREAM("[Continuum Robot]k = "<<k);
-            ResetRobot();
-            if (k==0){
-                C << Configuration(0),Configuration(1);
-            }
-            else{
-                dC<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F;
-                C = C + dC;
-            }
-            Velocity = JacobianLC*(Velocity_Path.col(k) + 10*(C-Configuration));
-            ROS_INFO_STREAM("[test]Velocity_L = "<<Velocity(0)<<" "<<Velocity(1)<<" "<<Velocity(2));
-
-            dwRel = SetVelocity(Velocity);
-            if(dwRel==0){
-                break;
-                ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
-                return 0;
-            }
-
-            k++;
-            F_Control.sleep();            
+        int flag = 1;
+        double* Length_DrivingWire_Desired = ConfigurationToLength_DrivingWire(Configuration_Desired);
+        flag = ToLength_DrivingWire(Length_DrivingWire_Desired,T,F);
+        if(flag == 0){
+            ROS_ERROR_STREAM("[Continuum Robot] Fail to arrive desired Length_DrivingWire");
+            return 0;
         }
 
-        ROS_INFO_STREAM("[ContinuumRobot] To Configuration:"<<Configuration_Desired[0]<<" "<<Configuration_Desired[1]<<" successfull");
+        ROS_INFO_STREAM("[Continuum Robot] To Configuration:"<<Configuration_Desired[0]<<" "<<Configuration_Desired[1]<<" successfull");
         return 1;
     }
 
@@ -136,7 +112,7 @@ namespace NS_ContinuumRobot {
             }
 
             k++;
-            F_Control.sleep();            
+            F_Control.sleep();          
         }
         ROS_INFO_STREAM("[ContinuumRobot] To Length_DrivingWire:"<<Length_DrivingWire_Desired[0]<<" "<<Length_DrivingWire_Desired[1]<<" "<<Length_DrivingWire_Desired[2]<<" successfull");
         return 1;
@@ -175,12 +151,6 @@ namespace NS_ContinuumRobot {
         ResetJacobianCX();
         ResetJacobianLC();
         ResetJacobianLX();
-
-        //write data to txt
-        FILE *WriteTXT = NULL;
-        WriteTXT = fopen(FileAddress,"w+");
-        fprintf(WriteTXT,"%lf,%lf,%lf",Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2));
-        fclose(WriteTXT);
     }
 
     void ContinuumRobot::ResetLength_DrivingWire(){
@@ -261,6 +231,18 @@ namespace NS_ContinuumRobot {
         JacobianLX = JacobianLC*JacobianCX;
     }
 
+    double* ContinuumRobot::ConfigurationToLength_DrivingWire(double Configuration_Desired[2]){
+        double PSI[3];
+        double DELTA[3];
+        double *Length_DrivingWire_Desired = new double[3];
+        for(int i=0;i<3;i++){
+            PSI[i] = Configuration_Desired[1] + i*Beta;
+            DELTA[i] = Radius * cos(PSI[i]);
+            Length_DrivingWire_Desired[i] = Length_Backbone + DELTA[i]*Configuration_Desired[0];
+        }
+        return Length_DrivingWire_Desired;
+    }
+
     MatrixXd ContinuumRobot::pinv(MatrixXd J){	
         MatrixXd S;
         MatrixXd invJ;
@@ -338,6 +320,14 @@ namespace NS_ContinuumRobot {
         Tra.row(1)=trab.matrix().transpose();
         Tra.row(2)=trac.matrix().transpose();
         return Tra;
+    }
+
+    void ContinuumRobot::ResetDoc_Length(){
+        //write data to txt
+        FILE *WriteTXT = NULL;
+        WriteTXT = fopen(FileAddress,"w+");
+        fprintf(WriteTXT,"%lf,%lf,%lf",Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2));
+        fclose(WriteTXT);
     }
 
 }

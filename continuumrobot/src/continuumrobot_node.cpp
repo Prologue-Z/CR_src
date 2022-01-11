@@ -42,11 +42,11 @@ int main(int argc, char **argv){
 		return 0;
 	}
 
-	// double L_D[3] = {0.3,0.3,0.3};
-	// CR.ToLength_DrivingWire(L_D,T,F);
+	double L_D[3] = {0.3,0.3,0.3};
+	CR.ToLength_DrivingWire(L_D,T,F);
 
-	double C_D[2] = {PI/2,PI/2};
-	CR.ToConfiguration(C_D,T,F);
+	// double C_D[2] = {PI/3,0};
+	// CR.ToConfiguration(C_D,T,F);
 
 	//CR.MotorTest();
 
