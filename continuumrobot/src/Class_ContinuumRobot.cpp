@@ -89,7 +89,7 @@ namespace NS_ContinuumRobot {
                 dC<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F;
                 C = C + dC;
             }
-            Velocity = JacobianLC*(Velocity_Path.col(k) + 5*(C-Configuration));
+            Velocity = JacobianLC*(Velocity_Path.col(k) + 10*(C-Configuration));
             ROS_INFO_STREAM("[test]Velocity_L = "<<Velocity(0)<<" "<<Velocity(1)<<" "<<Velocity(2));
 
             dwRel = SetVelocity(Velocity);
@@ -126,7 +126,7 @@ namespace NS_ContinuumRobot {
                 dL<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F,Velocity_Path(2,k)/F;
                 L = L + dL;
             }
-            Velocity = (Velocity_Path.col(k) + 5*(L-Length_DrivingWire));
+            Velocity = (Velocity_Path.col(k) + 10*(L-Length_DrivingWire));
             ROS_INFO_STREAM("[test]Velocity_L = "<<Velocity(0)<<" "<<Velocity(1)<<" "<<Velocity(2));
 
             dwRel = SetVelocity(Velocity);
@@ -140,6 +140,27 @@ namespace NS_ContinuumRobot {
         }
         ROS_INFO_STREAM("[ContinuumRobot] To Length_DrivingWire:"<<Length_DrivingWire_Desired[0]<<" "<<Length_DrivingWire_Desired[1]<<" "<<Length_DrivingWire_Desired[2]<<" successfull");
         return 1;
+    }
+
+    int ContinuumRobot::MotorTest(){
+        DWORD dwRel;
+        Vector3d Velocity;
+        Velocity << 0,0,0.01;
+        double v[3] = {0,0,-600};
+        Motor.GetPosition();
+        //dwRel = SetVelocity(Velocity);
+        Motor.SetSpeed(v);
+        sleep(1);
+        Velocity << 0,0,0;
+        double v0[3] = {0,0,600};
+        //dwRel = SetVelocity(Velocity);
+        Motor.SetSpeed(v0);
+        Motor.GetPosition();
+        sleep(1);
+        double v1[3] = {0,0,0};
+        Motor.SetSpeed(v1);
+        Motor.GetPosition();
+        return 0;
     }
 
 

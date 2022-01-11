@@ -39,11 +39,34 @@ namespace NS_ContinuumRobot {
          */
         int InitRobot();
 
+        /**
+         * @brief clear position of motors to zero
+         * 
+         * @return int 1-success 0- fail
+         */
         int ClearMotorPosition();
 
-
+        /**
+         * @brief configuration to Configuration_Desired
+         * 
+         * @param Configuration_Desired 
+         * @param T motion time
+         * @param F control frequency
+         * @return int 0-fail 1-success
+         */
         int ToConfiguration(double Configuration_Desired[2],int T,int F);
+
+        /**
+         * @brief Length_DrivingWire to Length_DrivingWire_Desired 
+         * 
+         * @param Length_DrivingWire_Desired 
+         * @param T motion time
+         * @param F control frequency
+         * @return int 0-fail 1-success
+         */
         int ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F);
+
+        int MotorTest();
 
         private:
         const double Length_Backbone = 0.3;
