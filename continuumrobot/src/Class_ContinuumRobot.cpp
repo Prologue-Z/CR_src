@@ -118,26 +118,6 @@ namespace NS_ContinuumRobot {
         return 1;
     }
 
-    int ContinuumRobot::MotorTest(){
-        DWORD dwRel;
-        Vector3d Velocity;
-        Velocity << 0,0,0.01;
-        double v[3] = {0,0,-600};
-        Motor.GetPosition();
-        //dwRel = SetVelocity(Velocity);
-        Motor.SetSpeed(v);
-        sleep(1);
-        Velocity << 0,0,0;
-        double v0[3] = {0,0,600};
-        //dwRel = SetVelocity(Velocity);
-        Motor.SetSpeed(v0);
-        Motor.GetPosition();
-        sleep(1);
-        double v1[3] = {0,0,0};
-        Motor.SetSpeed(v1);
-        Motor.GetPosition();
-        return 0;
-    }
 
 
     //private
@@ -147,10 +127,6 @@ namespace NS_ContinuumRobot {
         ResetConfiguration();
         ResetX();
 
-        //Reset jacobian matrix
-        ResetJacobianCX();
-        ResetJacobianLC();
-        ResetJacobianLX();
     }
 
     void ContinuumRobot::ResetLength_DrivingWire(){
@@ -185,50 +161,6 @@ namespace NS_ContinuumRobot {
             X(1) = (Length_Backbone*sin(Configuration(1)))/Configuration(0) - (Length_Backbone*sin(Configuration(1))*cos(Configuration(0)))/Configuration(0);
             X(2) = Length_Backbone*sin(Configuration(0))/Configuration(0);
         }
-    }
-
-    void ContinuumRobot::ResetJacobianCX(){
-        Matrix<double,3,2> JacobianXC;
-        double theta = Configuration(0);
-        double delta = Configuration(1);
-        double L = Length_Backbone;
-        double dx1dtheta,dx1ddelta,dy1dtheta,dy1ddelta,dz1dtheta,dz1ddelta;
-        if(theta == 0){//Singular posture
-            dx1dtheta = (L*cos(delta))/2;
-            dx1ddelta = 0;
-            dy1dtheta = (L*sin(delta))/2;
-            dy1ddelta = 0;
-            dz1dtheta = 0;
-            dz1ddelta = 0;
-        }
-        else{
-            dx1dtheta = (L*cos(delta)*cos(theta))/pow(theta,2) - (L*cos(delta))/pow(theta,2) + (L*cos(delta)*sin(theta))/theta;
-            dx1ddelta = (L*sin(delta)*cos(theta))/theta - (L*sin(delta))/theta;
-            dy1dtheta = (L*sin(delta)*cos(theta))/pow(theta,2) - (L*sin(delta))/pow(theta,2) + (L*sin(delta)*sin(theta))/theta;
-            dy1ddelta = (L*cos(delta))/theta - (L*cos(delta)*cos(theta))/theta;
-            dz1dtheta = (L*cos(theta))/theta - (L*sin(theta))/pow(theta,2);
-            dz1ddelta = 0;
-        }
-
-        JacobianXC<< dx1dtheta,dx1ddelta,
-                     dy1dtheta,dy1ddelta,
-                     dz1dtheta,dz1ddelta;     
-        JacobianCX = pinv(JacobianXC);   
-    }
-
-    void ContinuumRobot::ResetJacobianLC(){
-        double theta = Configuration(0);
-        double delta = Configuration(1);
-        double R = Radius;
-        JacobianLC<<          R*cos(delta),          -R*theta*sin(delta),
-                       R*cos(Beta + delta),   -R*theta*sin(Beta + delta),
-                     R*cos(2*Beta + delta), -R*theta*sin(2*Beta + delta);   
-    }
-
-    void ContinuumRobot::ResetJacobianLX(){
-        ResetJacobianCX();
-        ResetJacobianLC();
-        JacobianLX = JacobianLC*JacobianCX;
     }
 
     double* ContinuumRobot::ConfigurationToLength_DrivingWire(double Configuration_Desired[2]){

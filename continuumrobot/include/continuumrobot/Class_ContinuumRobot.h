@@ -66,7 +66,6 @@ namespace NS_ContinuumRobot {
          */
         int ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F);
 
-        int MotorTest();
 
         private:
         const double Length_Backbone = 0.3;
@@ -81,10 +80,6 @@ namespace NS_ContinuumRobot {
         Vector3d Length_DrivingWire;//Position in actuation space-Length of three driving wires
         Vector2d Configuration;//Position in configuration space-Configuration[0]-Center angle of arc  Configuration[1]-Angle between bending plane and X-Z plane
         Vector3d X;//Position in operating space
-
-        Matrix<double,2,3> JacobianCX;// Jacobian dC1dX
-        Matrix<double,3,2> JacobianLC;// Jacobian dL1dC
-        Matrix<double,3,3> JacobianLX;// Jacobian dL1dX
 
         NS_Motor::Motor Motor;
         
@@ -107,9 +102,6 @@ namespace NS_ContinuumRobot {
         void ResetConfiguration();
         void ResetX();
 
-        void ResetJacobianCX();
-        void ResetJacobianLC();
-        void ResetJacobianLX();
 
         /**
          * @brief kinematic:Configuration -> Length_DrivingWire
