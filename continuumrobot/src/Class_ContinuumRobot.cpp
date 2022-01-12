@@ -36,15 +36,14 @@ namespace NS_ContinuumRobot {
         }
         else{
             fscanf(InitTxt,"%lf,%lf,%lf",&Length_DrivingWire(0),&Length_DrivingWire(1),&Length_DrivingWire(2));
-            ROS_INFO_STREAM("[test]ld = "<<Length_DrivingWire(0)<<" "<<Length_DrivingWire(1)<<" "<<Length_DrivingWire(2));
             fclose(InitTxt);
         }
         //get length of DrivingWire at startup robot 
         Length_DrivingWire__Startup = Length_DrivingWire;
+        ROS_INFO_STREAM("[Continuum Robot]Length_DrivingWire__Startup = "<<Length_DrivingWire(0)<<" "<<Length_DrivingWire(1)<<" "<<Length_DrivingWire(2));
 
         //init motor:init motors->enable motors->set speed mode
         dwRel = Motor.InitMotors();
-        //ROS_INFO_STREAM("test dwr = "<<dwRel);
         if(dwRel != STATUS_OK){
             return dwRel;
         }
@@ -103,7 +102,6 @@ namespace NS_ContinuumRobot {
                 L = L + dL;
             }
             Velocity = (Velocity_Path.col(k) + 10*(L-Length_DrivingWire));
-            ROS_INFO_STREAM("[test]Velocity_L = "<<Velocity(0)<<" "<<Velocity(1)<<" "<<Velocity(2));
 
             dwRel = SetVelocity(Velocity);
             if(dwRel==0){
@@ -127,6 +125,11 @@ namespace NS_ContinuumRobot {
         ResetConfiguration();
         ResetX();
 
+        //Reset jacobian matrix
+        ResetJacobianCX();
+        ResetJacobianLC();
+        ResetJacobianLX();
+
     }
 
     void ContinuumRobot::ResetLength_DrivingWire(){
@@ -136,7 +139,7 @@ namespace NS_ContinuumRobot {
         for(int i=0;i<3;i++){
             Length_DrivingWire(i) = Length_DrivingWire__Startup(i) + R_Motor[i]*ScrewLead;
         }
-        ROS_INFO_STREAM("[test] ld = "<<Length_DrivingWire(0)<<" "<<Length_DrivingWire(1)<<" "<<Length_DrivingWire(2));
+        ROS_INFO_STREAM("[Continuum Robot] Length_DrivingWire = "<<Length_DrivingWire(0)<<" "<<Length_DrivingWire(1)<<" "<<Length_DrivingWire(2));
 
     }
 
@@ -149,7 +152,6 @@ namespace NS_ContinuumRobot {
             Configuration(1) = atan2((Length_DrivingWire(2)-Length_Backbone)-(Length_DrivingWire(1)-Length_Backbone)*cos(Beta),-(Length_DrivingWire(1)-Length_Backbone)*sin(Beta));
             Configuration(0) = (Length_DrivingWire(0)-Length_Backbone)/Radius/cos(Configuration(1));
         }
-        ROS_INFO_STREAM("[test]config = "<<Configuration(0)<<" "<<Configuration(1));
     }
 
     void ContinuumRobot::ResetX(){
@@ -162,6 +164,51 @@ namespace NS_ContinuumRobot {
             X(2) = Length_Backbone*sin(Configuration(0))/Configuration(0);
         }
     }
+
+    void ContinuumRobot::ResetJacobianCX(){
+        Matrix<double,3,2> JacobianXC;
+        double theta = Configuration(0);
+        double delta = Configuration(1);
+        double L = Length_Backbone;
+        double dx1dtheta,dx1ddelta,dy1dtheta,dy1ddelta,dz1dtheta,dz1ddelta;
+        if(theta == 0){//Singular posture
+            dx1dtheta = (L*cos(delta))/2;
+            dx1ddelta = 0;
+            dy1dtheta = (L*sin(delta))/2;
+            dy1ddelta = 0;
+            dz1dtheta = 0;
+            dz1ddelta = 0;
+        }
+        else{
+            dx1dtheta = (L*cos(delta)*cos(theta))/pow(theta,2) - (L*cos(delta))/pow(theta,2) + (L*cos(delta)*sin(theta))/theta;
+            dx1ddelta = (L*sin(delta)*cos(theta))/theta - (L*sin(delta))/theta;
+            dy1dtheta = (L*sin(delta)*cos(theta))/pow(theta,2) - (L*sin(delta))/pow(theta,2) + (L*sin(delta)*sin(theta))/theta;
+            dy1ddelta = (L*cos(delta))/theta - (L*cos(delta)*cos(theta))/theta;
+            dz1dtheta = (L*cos(theta))/theta - (L*sin(theta))/pow(theta,2);
+            dz1ddelta = 0;
+        }
+
+        JacobianXC<< dx1dtheta,dx1ddelta,
+                     dy1dtheta,dy1ddelta,
+                     dz1dtheta,dz1ddelta;     
+        JacobianCX = pinv(JacobianXC);   
+    }
+
+    void ContinuumRobot::ResetJacobianLC(){
+        double theta = Configuration(0);
+        double delta = Configuration(1);
+        double R = Radius;
+        JacobianLC<<          R*cos(delta),          -R*theta*sin(delta),
+                       R*cos(Beta + delta),   -R*theta*sin(Beta + delta),
+                     R*cos(2*Beta + delta), -R*theta*sin(2*Beta + delta);   
+    }
+
+    void ContinuumRobot::ResetJacobianLX(){
+        ResetJacobianCX();
+        ResetJacobianLC();
+        JacobianLX = JacobianLC*JacobianCX;
+    }
+
 
     double* ContinuumRobot::ConfigurationToLength_DrivingWire(double Configuration_Desired[2]){
         double PSI[3];
