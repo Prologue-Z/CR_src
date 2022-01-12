@@ -238,12 +238,12 @@ namespace NS_ContinuumRobot {
         for(int i=0;i<3;i++){
             PSI[i] = Configuration_Desired[1] + i*Beta;
             DELTA[i] = Radius * cos(PSI[i]);
-            Length_DrivingWire_Desired[i] = Length_Backbone + DELTA[i]*Configuration_Desired[0];
+            Length_DrivingWire_Desired[i] = Length_Backbone - DELTA[i]*Configuration_Desired[0];
         }
         return Length_DrivingWire_Desired;
     }
 
-    MatrixXd ContinuumRobot::pinv(MatrixXd J){	
+    MatrixXd ContinuumRobot::pinv(MatrixXd J){	 
         MatrixXd S;
         MatrixXd invJ;
         JacobiSVD<MatrixXd> svd(J, ComputeThinU | ComputeThinV);
