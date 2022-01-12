@@ -111,6 +111,12 @@ namespace NS_ContinuumRobot {
         void ResetJacobianLC();
         void ResetJacobianLX();
 
+        /**
+         * @brief kinematic:Configuration -> Length_DrivingWire
+         * 
+         * @param Configuration_Desired configuraition
+         * @return double* 
+         */
         double* ConfigurationToLength_DrivingWire(double Configuration_Desired[2]);
         
         /**
