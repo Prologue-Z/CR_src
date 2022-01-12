@@ -81,6 +81,10 @@ namespace NS_ContinuumRobot {
         Vector2d Configuration;//Position in configuration space-Configuration[0]-Center angle of arc  Configuration[1]-Angle between bending plane and X-Z plane
         Vector3d X;//Position in operating space
 
+        Matrix<double,2,3> JacobianCX;// Jacobian dC1dX
+        Matrix<double,3,2> JacobianLC;// Jacobian dL1dC
+        Matrix<double,3,3> JacobianLX;// Jacobian dL1dX
+
         NS_Motor::Motor Motor;
         
         /**
@@ -102,6 +106,10 @@ namespace NS_ContinuumRobot {
         void ResetConfiguration();
         void ResetX();
 
+        void ResetJacobianCX();
+        void ResetJacobianLC();
+        void ResetJacobianLX();
+
 
         /**
          * @brief kinematic:Configuration -> Length_DrivingWire
@@ -110,6 +118,7 @@ namespace NS_ContinuumRobot {
          * @return double* 
          */
         double* ConfigurationToLength_DrivingWire(double Configuration_Desired[2]);
+
         
         /**
          * @brief get the pseudo inverse of a matrix
