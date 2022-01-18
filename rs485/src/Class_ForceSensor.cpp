@@ -9,9 +9,8 @@
  */
 
 #include <ros/ros.h>
-#include <rs485/Class_ForceSensor.h>
-#include <rs485/Function_Common.h>
-#include <rs485/Class_Serial.h>
+#include "rs485/Class_ForceSensor.h"
+#include "rs485/Function_Common.h"
 
 
 namespace NS_ForceSensor{
@@ -24,7 +23,8 @@ namespace NS_ForceSensor{
         for(int i=1;i<=3;i++){
             RenewSFrame(i,MC_SingleOutput,0);
             SendMsg();
-            usleep(100000);//50ms
+            //usleep(100000);//50ms
+            while(Ser.available()<10){};
             ReadMsg(i);
         }
         return Force;
@@ -60,28 +60,22 @@ namespace NS_ForceSensor{
 
     int ForceSensor::InitTrans(){
         size_t flag = 0;
-        //open Ser
-        //创建timeout
+        //Set Ser
         serial::Timeout to = serial::Timeout::simpleTimeout(100);
-        //设置要打开的串口名称
         Ser.setPort("/dev/ttyCH341USB0");
-        //设置串口通信的波特率
         Ser.setBaudrate(9600);
-        //串口设置timeout
         Ser.setTimeout(to);
+        //open Ser
         try{
-            //打开串口
             Ser.open();
         }
         catch(serial::IOException& e){
-            ROS_ERROR_STREAM("[rs485] Unable to open port.");
+            ROS_ERROR_STREAM("[RS485] Unable to open port.");
             return -1;
-        }
-        
-        //判断串口是否打开成功
+        }        
         if(Ser.isOpen())
         {
-            ROS_INFO_STREAM("[rs485] /dev/ttyCH341USB0 is opened.");
+            ROS_INFO_STREAM("[RS485] /dev/ttyCH341USB0 is opened.");
         }
         else{
             return -1;

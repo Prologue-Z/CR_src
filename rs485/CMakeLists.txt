@@ -136,7 +136,6 @@ include_directories(
  add_executable(rs485_node
 		src/rs485_node.cpp
 		src/Class_ForceSensor.cpp
-		src/Class_Serial.cpp
 		src/Function_Commom.cpp
 )
 
