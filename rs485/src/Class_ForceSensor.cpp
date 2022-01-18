@@ -23,8 +23,10 @@ namespace NS_ForceSensor{
         for(int i=1;i<=3;i++){
             RenewSFrame(i,MC_SingleOutput,0);
             SendMsg();
-            //usleep(100000);//50ms
-            while(Ser.available()<10){};
+            //usleep(100000);
+            int Num = 0;
+            while(Num < 10){Num = Ser.available();};
+            ROS_INFO_STREAM("[test] Num = "<<Num);
             ReadMsg(i);
         }
         return Force;
@@ -80,6 +82,7 @@ namespace NS_ForceSensor{
         else{
             return -1;
         }
+
         //set baud rate
         for(int i=1;i<=3;i++){
             RenewSFrame(1,MC_BaudRate,3);//set baud rate:1-2400 2-4800 3-9600 4-19200 5-38400
@@ -91,6 +94,9 @@ namespace NS_ForceSensor{
             return -1;
         }
         else ROS_INFO_STREAM("[RS485] Set baud rate of transmitter successfully");
+
+        //clear buffer
+        Ser.flush();
 
         return 0;
     }

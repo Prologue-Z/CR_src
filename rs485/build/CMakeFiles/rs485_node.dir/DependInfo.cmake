@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/zhangxu/catkin_ws/src/rs485/src/Class_ForceSensor.cpp" "/home/zhangxu/catkin_ws/src/rs485/build/CMakeFiles/rs485_node.dir/src/Class_ForceSensor.cpp.o"
-  "/home/zhangxu/catkin_ws/src/rs485/src/Class_Serial.cpp" "/home/zhangxu/catkin_ws/src/rs485/build/CMakeFiles/rs485_node.dir/src/Class_Serial.cpp.o"
   "/home/zhangxu/catkin_ws/src/rs485/src/Function_Commom.cpp" "/home/zhangxu/catkin_ws/src/rs485/build/CMakeFiles/rs485_node.dir/src/Function_Commom.cpp.o"
   "/home/zhangxu/catkin_ws/src/rs485/src/rs485_node.cpp" "/home/zhangxu/catkin_ws/src/rs485/build/CMakeFiles/rs485_node.dir/src/rs485_node.cpp.o"
   )

@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     // ros::Publisher pub = nh.advertise<rs485::Msg_Force>("Topic_Force",1);
     
     NS_ForceSensor::ForceSensor* FS = new NS_ForceSensor::ForceSensor();
-    ros::Rate Collect(1);
+    ros::Rate Collect(10);
     double* ForceShow = new double[3];
     rs485::Msg_Force ForceMsg;
     while (ros::ok())

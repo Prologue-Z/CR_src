@@ -675,33 +675,6 @@ src/Class_ForceSensor.cpp.s:
 	$(MAKE) -f CMakeFiles/rs485_node.dir/build.make CMakeFiles/rs485_node.dir/src/Class_ForceSensor.cpp.s
 .PHONY : src/Class_ForceSensor.cpp.s
 
-src/Class_Serial.o: src/Class_Serial.cpp.o
-
-.PHONY : src/Class_Serial.o
-
-# target to build an object file
-src/Class_Serial.cpp.o:
-	$(MAKE) -f CMakeFiles/rs485_node.dir/build.make CMakeFiles/rs485_node.dir/src/Class_Serial.cpp.o
-.PHONY : src/Class_Serial.cpp.o
-
-src/Class_Serial.i: src/Class_Serial.cpp.i
-
-.PHONY : src/Class_Serial.i
-
-# target to preprocess a source file
-src/Class_Serial.cpp.i:
-	$(MAKE) -f CMakeFiles/rs485_node.dir/build.make CMakeFiles/rs485_node.dir/src/Class_Serial.cpp.i
-.PHONY : src/Class_Serial.cpp.i
-
-src/Class_Serial.s: src/Class_Serial.cpp.s
-
-.PHONY : src/Class_Serial.s
-
-# target to generate assembly for a file
-src/Class_Serial.cpp.s:
-	$(MAKE) -f CMakeFiles/rs485_node.dir/build.make CMakeFiles/rs485_node.dir/src/Class_Serial.cpp.s
-.PHONY : src/Class_Serial.cpp.s
-
 src/Function_Commom.o: src/Function_Commom.cpp.o
 
 .PHONY : src/Function_Commom.o
@@ -809,9 +782,6 @@ help:
 	@echo "... src/Class_ForceSensor.o"
 	@echo "... src/Class_ForceSensor.i"
 	@echo "... src/Class_ForceSensor.s"
-	@echo "... src/Class_Serial.o"
-	@echo "... src/Class_Serial.i"
-	@echo "... src/Class_Serial.s"
 	@echo "... src/Function_Commom.o"
 	@echo "... src/Function_Commom.i"
 	@echo "... src/Function_Commom.s"
