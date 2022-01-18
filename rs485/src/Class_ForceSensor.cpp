@@ -39,17 +39,17 @@ namespace NS_ForceSensor{
     }
 
     size_t ForceSensor::SendMsg(){
-    size_t size = Ser.swrite(SendFrame,8);  //8-a send frame of transmitter
-    if(size<8) {        
-        ROS_ERROR_STREAM("[RS485]Send data failue");
-        Ser.sclose();
-    }
-    return size;
+        size_t size = Ser.write(SendFrame,8);  //8-a send frame of transmitter
+        if(size<8) {        
+            ROS_ERROR_STREAM("[RS485]Send data failue");
+            Ser.close();
+        }
+        return size;
     }
 
     size_t ForceSensor::ReadMsg(int i){
         unsigned char* ReadBuff = new unsigned char[10];//10-a receive frame of transmitter
-        size_t size = Ser.sread(ReadBuff,10);
+        size_t size = Ser.read(ReadBuff,10);
         if(size<10){
             ROS_ERROR_STREAM("[RS485]Read data failure");
         }
@@ -60,17 +60,43 @@ namespace NS_ForceSensor{
 
     int ForceSensor::InitTrans(){
         size_t flag = 0;
+        //open Ser
+        //创建timeout
+        serial::Timeout to = serial::Timeout::simpleTimeout(100);
+        //设置要打开的串口名称
+        Ser.setPort("/dev/ttyCH341USB0");
+        //设置串口通信的波特率
+        Ser.setBaudrate(9600);
+        //串口设置timeout
+        Ser.setTimeout(to);
+        try{
+            //打开串口
+            Ser.open();
+        }
+        catch(serial::IOException& e){
+            ROS_ERROR_STREAM("[rs485] Unable to open port.");
+            return -1;
+        }
+        
+        //判断串口是否打开成功
+        if(Ser.isOpen())
+        {
+            ROS_INFO_STREAM("[rs485] /dev/ttyCH341USB0 is opened.");
+        }
+        else{
+            return -1;
+        }
         //set baud rate
         for(int i=1;i<=3;i++){
             RenewSFrame(1,MC_BaudRate,3);//set baud rate:1-2400 2-4800 3-9600 4-19200 5-38400
             flag += SendMsg();
         }      
         if(flag<24){
-            ROS_ERROR_STREAM("[RS485 Error]Failed to set baud rate of transmitter,flag = "<<flag);
-            Ser.sclose();
+            ROS_ERROR_STREAM("[RS485] Failed to set baud rate of transmitter,flag = "<<flag);
+            Ser.close();
             return -1;
         }
-        else ROS_INFO_STREAM("[RS485]Set baud rate of transmitter successfully");
+        else ROS_INFO_STREAM("[RS485] Set baud rate of transmitter successfully");
 
         return 0;
     }

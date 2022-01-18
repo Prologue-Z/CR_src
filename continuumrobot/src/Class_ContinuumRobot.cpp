@@ -15,7 +15,8 @@
 
 namespace NS_ContinuumRobot {
     //public
-    ContinuumRobot::ContinuumRobot(){
+    ContinuumRobot::ContinuumRobot(ros::NodeHandle nh_)
+    : nh(nh_) {
     }
 
     ContinuumRobot::~ContinuumRobot(){
@@ -28,8 +29,8 @@ namespace NS_ContinuumRobot {
         FILE *InitTxt = NULL;
         DWORD dwRel;
         //get length of DrivingWire
-        if((InitTxt = fopen(FileAddress,"r")) == NULL){
-            InitTxt = fopen(FileAddress,"w");  
+        if((InitTxt = fopen(Add_Record,"rt")) == NULL){
+            InitTxt = fopen(Add_Record,"w");  
             fprintf(InitTxt,"%lf,%lf,%lf",Length_Backbone,Length_Backbone,Length_Backbone);
             fclose(InitTxt);
             Length_DrivingWire(0)=Length_DrivingWire(1)=Length_DrivingWire(2)=Length_Backbone;
@@ -69,10 +70,10 @@ namespace NS_ContinuumRobot {
         return 1;
     }
 
-    int ContinuumRobot::ToConfiguration(double Configuration_Desired[2],int T,int F){
+    int ContinuumRobot::ToConfiguration(double Configuration_Desired[2],int T,int F,bool IsWrite){
         int flag = 1;
         double* Length_DrivingWire_Desired = ConfigurationToLength_DrivingWire(Configuration_Desired);
-        flag = ToLength_DrivingWire(Length_DrivingWire_Desired,T,F);
+        flag = ToLength_DrivingWire(Length_DrivingWire_Desired,T,F,IsWrite);
         if(flag == 0){
             ROS_ERROR_STREAM("[Continuum Robot] Fail to arrive desired Length_DrivingWire");
             return 0;
@@ -82,26 +83,46 @@ namespace NS_ContinuumRobot {
         return 1;
     }
 
-    int ContinuumRobot::ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F){
-        MatrixXd Velocity_Path;
+    int ContinuumRobot::ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F,bool IsWrite){
+        double Kp = 5;
+        double Ki = 2;
+        double Kd = 0.0001;
+
         int k =0;
         ros::Rate F_Control(F);
-        Vector3d Velocity;
+        DWORD dwRel;
+
+        MatrixXd Velocity_Path;
+        Vector3d Velocity;          
+        Vector3d L_Desired,L_Delta;
+        Vector3d Error;
+        Vector3d Error_Last;
+        Vector3d Errot_Sum;
 
         Velocity_Path = TrajectoryGeneration(Length_DrivingWire_Desired[0],Length_DrivingWire_Desired[1],Length_DrivingWire_Desired[2],T,F);
-        Vector3d L,dL;
-        DWORD dwRel;
+
         while(k<T*F){
             ROS_INFO_STREAM("[Continuum Robot]k = "<<k);
             ResetRobot();
+            if(IsWrite == 1){
+                WriteTXT();
+            }
+            
             if (k==0){
-                L << Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2);
+                L_Desired = Length_DrivingWire;
+                Error_Last << 0,0,0;
+                Error << 0,0,0;
+                Errot_Sum << 0,0,0;
             }
             else{
-                dL<< Velocity_Path(0,k)/F,Velocity_Path(1,k)/F,Velocity_Path(2,k)/F;
-                L = L + dL;
+                L_Delta << Velocity_Path(0,k)/F,Velocity_Path(1,k)/F,Velocity_Path(2,k)/F;
+                L_Desired = L_Desired + L_Delta;
+                Error_Last = Error;
+                Error = L_Desired - Length_DrivingWire;
+                Errot_Sum += Error/F;
             }
-            Velocity = (Velocity_Path.col(k) + 10*(L-Length_DrivingWire));
+            
+            Velocity = Velocity_Path.col(k) + Kp*Error + Ki*(Errot_Sum) + Kd*(Error-Error_Last)*F;
 
             dwRel = SetVelocity(Velocity);
             if(dwRel==0){
@@ -110,12 +131,46 @@ namespace NS_ContinuumRobot {
             }
 
             k++;
-            F_Control.sleep();          
+            F_Control.sleep(); 
         }
         ROS_INFO_STREAM("[ContinuumRobot] To Length_DrivingWire:"<<Length_DrivingWire_Desired[0]<<" "<<Length_DrivingWire_Desired[1]<<" "<<Length_DrivingWire_Desired[2]<<" successfull");
         return 1;
     }
 
+    void ContinuumRobot::To0Position(){
+        int T = 10;
+        int F = 30;
+        double L_D[3] = {0.3,0.3,0.3};
+	    ToLength_DrivingWire(L_D,T,F,0);
+    }
+
+    void ContinuumRobot::DataCollection(int Num){
+        Vector2d Configuration_Desired;
+        double Configuration_Temp1[2];
+        double Configuration_Temp2[2];
+
+        int T = 10;
+        int F = 30;
+        double Configuration0_Rand;
+        double Configuration1_Rand;
+
+        while(Num>0){
+            //get random Configuration_Desired            
+            Configuration0_Rand = double(rand()%1000/1000)*PI/6 + PI/3;
+            Configuration1_Rand = double(rand()%1000/1000)*2*PI/3 - PI/3;
+            Configuration_Temp1[0] = Configuration0_Rand;
+            Configuration_Temp1[1] = Configuration(1) + Configuration0_Rand;
+            Configuration0_Rand = double(rand()%1000/1000)*PI/6;
+            Configuration1_Rand = double(rand()%1000/1000)*2*PI/3 - PI/3;
+            Configuration_Temp2[0] = Configuration0_Rand;            
+            Configuration_Temp2[1] = Configuration(1) + Configuration0_Rand;
+
+            ToConfiguration(Configuration_Temp1,T,F,1);
+            ToConfiguration(Configuration_Temp2,T,F,1);
+            Num = Num - 2*T*F;
+        }
+        To0Position();
+    }
 
 
     //private
@@ -149,9 +204,10 @@ namespace NS_ContinuumRobot {
             Configuration(1) = 0;//Psi = 0         
         }
         else{
-            Configuration(1) = atan2((Length_DrivingWire(2)-Length_Backbone)-(Length_DrivingWire(1)-Length_Backbone)*cos(Beta),-(Length_DrivingWire(1)-Length_Backbone)*sin(Beta));
-            Configuration(0) = (Length_DrivingWire(0)-Length_Backbone)/Radius/cos(Configuration(1));
+            Configuration(1) = atan2(cos(Beta)*(Length_Backbone-Length_DrivingWire(0))-(Length_Backbone-Length_DrivingWire(1)),(Length_Backbone-Length_DrivingWire(0))*sin(Beta));
+            Configuration(0) = (Length_Backbone-Length_DrivingWire(0))/Radius/cos(Configuration(1));
         }
+        ROS_INFO_STREAM("[test]C = "<<Configuration(0)<<" "<<Configuration(1));
     }
 
     void ContinuumRobot::ResetX(){
@@ -302,10 +358,18 @@ namespace NS_ContinuumRobot {
     }
 
     void ContinuumRobot::ResetDoc_Length(){
-        //write data to txt
         FILE *WriteTXT = NULL;
-        WriteTXT = fopen(FileAddress,"w+");
+        WriteTXT = fopen(Add_Record,"w+");
         fprintf(WriteTXT,"%lf,%lf,%lf",Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2));
+        fclose(WriteTXT);
+    }
+
+    void ContinuumRobot::WriteTXT(){
+        FILE *WriteTXT = NULL;
+        WriteTXT = fopen(Add_Data,"a+");
+        ros::Time Time_Now = ros::Time::now();
+        double Time_Double = Time_Now.toSec();
+        fprintf(WriteTXT,"%lf %lf %lf %lf \n",Time_Double,Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2));
         fclose(WriteTXT);
     }
 

@@ -8,9 +8,10 @@
  * @copyright Copyright (c) 2021 Key Laboratory of Mechanism Theory and Equipment Design of the Ministry of Education, School of Mechanical Engineering, Tianjin University, China
  */
 
-#include <rs485/Class_Serial.h>
 #include <fcntl.h>
 #include <termios.h>
+#include "rs485/Class_Serial.h"
+
 
 namespace NS_Serial{
     //public

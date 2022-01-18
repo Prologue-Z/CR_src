@@ -24,12 +24,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "continuumrobot_node");
     ros::NodeHandle nh("~"); 
 
-
-
-	int T = 10;
-	int F = 30;//10-20
-
-	NS_ContinuumRobot::ContinuumRobot CR;
+	NS_ContinuumRobot::ContinuumRobot CR(nh);
 	int flag = CR.InitRobot();
 	if(flag == 0){
 		ROS_ERROR_STREAM("[continuuumrobot_node] init robot fail");
@@ -41,49 +36,14 @@ int main(int argc, char **argv){
 		ROS_ERROR_STREAM("[continuuumrobot_node] clear position of motors fail");
 		return 0;
 	}
-
-	double L_D[3] = {0.3,0.3,0.3};
-	CR.ToLength_DrivingWire(L_D,T,F);
-
-	// double C_D[2] = {PI/3,0};
-	// CR.ToConfiguration(C_D,T,F);
-
-	//CR.MotorTest();
-
-
-
-	// ros::Rate Collect(1);
-	// DWORD dwRel;
-	// NS_Motor::Motor Motors;
-
-	// dwRel = Motors.InitMotors();
-	// if(dwRel != STATUS_OK){
-	// 	return dwRel;
-	// }
-	// dwRel = Motors.EnableMotors();
-	// if(dwRel != STATUS_OK){
-	// 	return dwRel;
-	// }
-	// Motors.SetSpeedMode();
 	
 
-	// int flag = 1;
-	// while(ros::ok()&&flag<=10){
-	// 	double* P = new double[3];
-	// 	P = Motors.GetPosition();
-	// 	ROS_INFO_STREAM("p1="<<P[0]<<"r, p2="<<P[1]<<"r, p3="<<P[2]<<"r");
-	// 	ros::Subscriber sub = nh.subscribe("Topic_Force",1,CallBack);
-		
-	// 	double Speed[3] = {-60*flag*0.1,-30*flag*0.1,-15*flag*0.1};
-	// 	Motors.SetSpeed(Speed);
+	//CR.To0Position();
 
-	// 	flag++;
+	//data collection control
+	int Num_Data = 300;
 
-	// 	ros::spinOnce();
-	// 	Collect.sleep();
-	// }
-
-	// Motors.CloseMotors();
+	CR.DataCollection(Num_Data);
 
 	return 1;
 }

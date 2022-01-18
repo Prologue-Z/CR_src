@@ -11,7 +11,8 @@
 #ifndef CLASS_FORCESENSOR_H
 #define CLASS_FORCESENSOR_H
 
-#include <rs485/Class_Serial.h>
+#include <serial/serial.h>
+#include "rs485/Class_Serial.h"
 
 namespace NS_ForceSensor{
     class ForceSensor{
@@ -34,7 +35,8 @@ namespace NS_ForceSensor{
         unsigned char SendFrame[8] = {0xaa,0xaa,0xaa};
         double Force[3] = {0,0,0};
         
-        NS_Serial::Serial Ser;
+        //NS_Serial::Serial Ser;
+        serial::Serial Ser;
 
         enum MSG_CMD{
             MC_BaudRate = 0xA2,

@@ -24,7 +24,7 @@ namespace NS_ContinuumRobot {
          * @brief Construct a new Continuum Robot object-init robot
          * 
          */
-        ContinuumRobot();
+        ContinuumRobot(ros::NodeHandle nh_);
 
         /**
          * @brief Destroy the Continuum Robot object-close motor
@@ -52,9 +52,10 @@ namespace NS_ContinuumRobot {
          * @param Configuration_Desired 
          * @param T motion time
          * @param F control frequency
+         * @param IsWrite 1-Write TXT 0-Do not write
          * @return int 0-fail 1-success
          */
-        int ToConfiguration(double Configuration_Desired[2],int T,int F);
+        int ToConfiguration(double Configuration_Desired[2],int T,int F,bool IsWrite);
 
         /**
          * @brief Length_DrivingWire to Length_DrivingWire_Desired 
@@ -62,9 +63,18 @@ namespace NS_ContinuumRobot {
          * @param Length_DrivingWire_Desired 
          * @param T motion time
          * @param F control frequency
+         * @param IsWrite 1-Write TXT 0-Do not write
          * @return int 0-fail 1-success
          */
-        int ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F);
+        int ToLength_DrivingWire(double Length_DrivingWire_Desired[3],int T,int F,bool IsWrite);
+
+        /**
+         * @brief To Length = (0.3,0.3,0.3)
+         * 
+         */
+        void To0Position();
+
+        void DataCollection(int Num);
 
 
         private:
@@ -74,7 +84,8 @@ namespace NS_ContinuumRobot {
         const double ScrewLead = -0.001;
 
         //const char* FileAddress = "../doc/Length_Record.txt";
-        const char* FileAddress = "/home/zhangxu/catkin_ws/src/continuumrobot/doc/Length_Record.txt";//???lujingwenti 
+        const char* Add_Record = "/home/zhangxu/catkin_ws/src/continuumrobot/doc/Length_Record.txt";//???lujingwenti 
+        const char* Add_Data = "/home/zhangxu/catkin_ws/src/continuumrobot/doc/Data_Collected.txt";
 
         Vector3d Length_DrivingWire__Startup;//DrivingWire_Length at startup robot 
         Vector3d Length_DrivingWire;//Position in actuation space-Length of three driving wires
@@ -86,6 +97,8 @@ namespace NS_ContinuumRobot {
         Matrix<double,3,3> JacobianLX;// Jacobian dL1dX
 
         NS_Motor::Motor Motor;
+
+        ros::NodeHandle nh;
         
         /**
          * @brief Set the Velocity of each lead screw
@@ -144,6 +157,8 @@ namespace NS_ContinuumRobot {
          * 
          */
         void ResetDoc_Length();
+
+        void WriteTXT();
 
     };
     
