@@ -25,7 +25,7 @@ namespace NS_ForceSensor{
             SendMsg();
             //usleep(100000);
             int Num = 0;
-            while(Num < 10){Num = Ser.available();};
+            while(!Num){Num = Ser.available();};
             ROS_INFO_STREAM("[test] Num = "<<Num);
             ReadMsg(i);
         }

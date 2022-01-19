@@ -141,7 +141,7 @@ namespace NS_Motor{
         }
 
         //ROS_INFO_STREAM("[Motor]Set speed successfully");
-        ROS_INFO_STREAM("[Motor]Set V1 = "<<Speed[0]<<"rpm, V2 = "<<Speed[1]<<"rpm, V3 = "<<Speed[2]<<"rpm");
+        //ROS_INFO_STREAM("[Motor]Set V1 = "<<Speed[0]<<"rpm, V2 = "<<Speed[1]<<"rpm, V3 = "<<Speed[2]<<"rpm");
         return dwRel;        
     }
 
@@ -172,7 +172,7 @@ namespace NS_Motor{
             Position[i] = NS_CommonFunction::ByteToInt(ReceiveData[i])/Encoder_PPR/ReductionRatio;
         }
 
-        ROS_INFO_STREAM("[Motor] Position = "<<Position[0]<<" "<<Position[1]<<" "<<Position[2]);
+        //ROS_INFO_STREAM("[Motor] Position = "<<Position[0]<<" "<<Position[1]<<" "<<Position[2]);
         return Position;
     }
 

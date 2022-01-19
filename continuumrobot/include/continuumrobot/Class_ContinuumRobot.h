@@ -15,6 +15,7 @@
 using namespace Eigen;
 
 #include "continuumrobot/Class_Motor.h"
+#include "msgs_continuumrobot/Msg_Force.h"
 
 
 namespace NS_ContinuumRobot {
@@ -76,6 +77,8 @@ namespace NS_ContinuumRobot {
 
         void DataCollection(int Num);
 
+        void Force_CallBack(const msgs_continuumrobot::Msg_Force::ConstPtr& Forcemsg);
+
 
         private:
         const double Length_Backbone = 0.3;
@@ -99,7 +102,7 @@ namespace NS_ContinuumRobot {
         NS_Motor::Motor Motor;
 
         ros::NodeHandle nh;
-        
+
         /**
          * @brief Set the Velocity of each lead screw
          * 
@@ -159,6 +162,8 @@ namespace NS_ContinuumRobot {
         void ResetDoc_Length();
 
         void WriteTXT();
+
+
 
     };
     

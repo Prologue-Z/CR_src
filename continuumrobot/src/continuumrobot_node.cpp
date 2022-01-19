@@ -25,6 +25,8 @@ int main(int argc, char **argv){
     ros::NodeHandle nh("~"); 
 
 	NS_ContinuumRobot::ContinuumRobot CR(nh);
+	ros::Subscriber Sub_Force = nh.subscribe<msgs_continuumrobot::Msg_Force>("Topic_Force",1,&NS_ContinuumRobot::ContinuumRobot::Force_CallBack,&CR);;
+        
 	int flag = CR.InitRobot();
 	if(flag == 0){
 		ROS_ERROR_STREAM("[continuuumrobot_node] init robot fail");
@@ -42,7 +44,6 @@ int main(int argc, char **argv){
 
 	//data collection control
 	int Num_Data = 300;
-
 	CR.DataCollection(Num_Data);
 
 	return 1;

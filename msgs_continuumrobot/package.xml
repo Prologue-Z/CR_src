@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>msgs_continuumrobot</name>
+  <version>0.0.0</version>
+  <description>The msgs_continuumrobot package</description>
+  <maintainer email="tju_zhangxu@tju.edu.cn">Zhang Xu</maintainer>
+  <license>TODO</license>
+  <url type="website">https://github.com/Prologue-Z/CR_src</url>
+  <author email="tju_zhangxu@tju.edu.cn">Zhang Xu</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <run_depend>message_runtime</run_depend>
+  <run_depend>std_msgs</run_depend>
+
+</package>

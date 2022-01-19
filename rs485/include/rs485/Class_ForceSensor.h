@@ -65,7 +65,7 @@ namespace NS_ForceSensor{
         };
         
         /**
-         * @brief initialize transmitter:Set Ser->open Ser->set baud rate of sensor
+         * @brief initialize transmitter:Set Ser->open Ser->set baud rate of sensor->clear bufffer
          * 
          * @return int 0-success -1-failure
          */

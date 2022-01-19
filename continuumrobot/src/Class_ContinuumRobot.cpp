@@ -129,6 +129,7 @@ namespace NS_ContinuumRobot {
                 ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
                 return 0;
             }
+            ros::spinOnce();
 
             k++;
             F_Control.sleep(); 
@@ -207,7 +208,7 @@ namespace NS_ContinuumRobot {
             Configuration(1) = atan2(cos(Beta)*(Length_Backbone-Length_DrivingWire(0))-(Length_Backbone-Length_DrivingWire(1)),(Length_Backbone-Length_DrivingWire(0))*sin(Beta));
             Configuration(0) = (Length_Backbone-Length_DrivingWire(0))/Radius/cos(Configuration(1));
         }
-        ROS_INFO_STREAM("[test]C = "<<Configuration(0)<<" "<<Configuration(1));
+        //ROS_INFO_STREAM("[test]C = "<<Configuration(0)<<" "<<Configuration(1));
     }
 
     void ContinuumRobot::ResetX(){
@@ -371,6 +372,10 @@ namespace NS_ContinuumRobot {
         double Time_Double = Time_Now.toSec();
         fprintf(WriteTXT,"%lf %lf %lf %lf \n",Time_Double,Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2));
         fclose(WriteTXT);
+    }
+
+    void ContinuumRobot::Force_CallBack(const msgs_continuumrobot::Msg_Force::ConstPtr& Forcemsg){
+        ROS_INFO_STREAM("[Topic test]F = "<<Forcemsg->F1<<" "<<Forcemsg->F2<<" "<<Forcemsg->F3);
     }
 
 }
