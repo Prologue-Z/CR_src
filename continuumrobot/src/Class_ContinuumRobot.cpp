@@ -129,7 +129,8 @@ namespace NS_ContinuumRobot {
                 ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
                 return 0;
             }
-            ros::spinOnce();
+
+            //ros::spinOnce();
 
             k++;
             F_Control.sleep(); 
