@@ -77,14 +77,13 @@ namespace NS_ContinuumRobot {
 
         void DataCollection(int Num);
 
-        void Force_CallBack(const msgs_continuumrobot::Msg_Force::ConstPtr& Forcemsg);
-
-
         private:
         const double Length_Backbone = 0.3;
         const double Radius = 0.015;
         const double Beta = 2*PI/3;
         const double ScrewLead = -0.001;
+
+        double Force[3];
 
         //const char* FileAddress = "../doc/Length_Record.txt";
         const char* Add_Record = "/home/zhangxu/catkin_ws/src/continuumrobot/doc/Length_Record.txt";//???lujingwenti 
@@ -163,6 +162,7 @@ namespace NS_ContinuumRobot {
 
         void WriteTXT();
 
+        void Force_CallBack(const msgs_continuumrobot::Msg_Force::ConstPtr& Forcemsg);
 
 
     };

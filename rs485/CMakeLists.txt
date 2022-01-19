@@ -28,12 +28,21 @@ add_executable(rs485_node
 		src/Function_Commom.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}_node
+
+target_link_libraries(rs485_node
    ${catkin_LIBRARIES}
 )
-add_dependencies(${PROJECT_NAME}_node 
+add_dependencies(rs485_node
    msgs_continuumrobot_generate_messages_cpp
 )
 
-
-
+###########delete after test
+add_executable(topic_test_node
+      src/topic_test_node.cpp
+)
+target_link_libraries(topic_test_node
+   ${catkin_LIBRARIES}
+)
+add_dependencies(topic_test_node
+   msgs_continuumrobot_generate_messages_cpp
+)

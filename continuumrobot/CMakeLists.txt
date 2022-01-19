@@ -5,10 +5,11 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   msgs_continuumrobot
+  message_generation
 )
 
 catkin_package(
-#  INCLUDE_DIRS include
+   INCLUDE_DIRS include
 #  LIBRARIES continuumrobot
    CATKIN_DEPENDS roscpp msgs_continuumrobot
 #  DEPENDS system_lib

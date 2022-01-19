@@ -104,6 +104,7 @@ namespace NS_ContinuumRobot {
         while(k<T*F){
             ROS_INFO_STREAM("[Continuum Robot]k = "<<k);
             ResetRobot();
+            ros::spinOnce();
             if(IsWrite == 1){
                 WriteTXT();
             }
@@ -128,9 +129,7 @@ namespace NS_ContinuumRobot {
             if(dwRel==0){
                 ROS_ERROR_STREAM("[Continuum Robot] Failed to set velocity,stop motion");
                 return 0;
-            }
-
-            //ros::spinOnce();
+            }           
 
             k++;
             F_Control.sleep(); 
@@ -156,6 +155,8 @@ namespace NS_ContinuumRobot {
         double Configuration0_Rand;
         double Configuration1_Rand;
 
+        ros::Subscriber Sub_Force = nh.subscribe("Topic_Force",1000,&NS_ContinuumRobot::ContinuumRobot::Force_CallBack,this);
+        
         while(Num>0){
             //get random Configuration_Desired            
             Configuration0_Rand = double(rand()%1000/1000)*PI/6 + PI/3;
@@ -371,12 +372,15 @@ namespace NS_ContinuumRobot {
         WriteTXT = fopen(Add_Data,"a+");
         ros::Time Time_Now = ros::Time::now();
         double Time_Double = Time_Now.toSec();
-        fprintf(WriteTXT,"%lf %lf %lf %lf \n",Time_Double,Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2));
+        fprintf(WriteTXT,"%lf %lf %lf %lf %lf %lf %lf\n",Time_Double,Length_DrivingWire(0),Length_DrivingWire(1),Length_DrivingWire(2),Force[0],Force[1],Force[2]);
         fclose(WriteTXT);
     }
 
     void ContinuumRobot::Force_CallBack(const msgs_continuumrobot::Msg_Force::ConstPtr& Forcemsg){
         ROS_INFO_STREAM("[Topic test]F = "<<Forcemsg->F1<<" "<<Forcemsg->F2<<" "<<Forcemsg->F3);
+        Force[0] = Forcemsg->F1;
+        Force[1] = Forcemsg->F2;
+        Force[2] = Forcemsg->F3;
     }
 
 }

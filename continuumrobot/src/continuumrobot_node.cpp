@@ -12,20 +12,15 @@
 #define PI M_PI
 #include <ros/ros.h>
 #include "ECanVci.h"
-//#include "continuumrobot/Class_Motor.h"
-#include "continuumrobot/Class_ContinuumRobot.h"
-//#include "rs485/Msg_Force.h"
 
-// void CallBack(const rs485::Msg_Force::ConstPtr& Force){
-// 	ROS_INFO_STREAM("[CR]Sub get msg.F1 = "<<Force->F1<<"N,F2 = "<<Force->F2<<"N,F3 = "<<Force->F3<<"N.");
-// }
+#include "continuumrobot/Class_ContinuumRobot.h"
+#include "msgs_continuumrobot/Msg_Force.h"
 
 int main(int argc, char **argv){
     ros::init(argc, argv, "continuumrobot_node");
-    ros::NodeHandle nh("~"); 
+    ros::NodeHandle nh; 
 
 	NS_ContinuumRobot::ContinuumRobot CR(nh);
-	ros::Subscriber Sub_Force = nh.subscribe<msgs_continuumrobot::Msg_Force>("Topic_Force",1,&NS_ContinuumRobot::ContinuumRobot::Force_CallBack,&CR);;
         
 	int flag = CR.InitRobot();
 	if(flag == 0){
@@ -39,8 +34,6 @@ int main(int argc, char **argv){
 		return 0;
 	}
 	
-	ros::spin();
-
 	//CR.To0Position();
 
 	//data collection control
@@ -49,3 +42,5 @@ int main(int argc, char **argv){
 
 	return 1;
 }
+
+
