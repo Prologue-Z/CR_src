@@ -134,6 +134,8 @@ namespace NS_ContinuumRobot {
             k++;
             F_Control.sleep(); 
         }
+        Velocity<<0,0,0;
+        dwRel = SetVelocity(Velocity);
         ROS_INFO_STREAM("[ContinuumRobot] To Length_DrivingWire:"<<Length_DrivingWire_Desired[0]<<" "<<Length_DrivingWire_Desired[1]<<" "<<Length_DrivingWire_Desired[2]<<" successfull");
         return 1;
     }
@@ -155,7 +157,7 @@ namespace NS_ContinuumRobot {
         double Configuration0_Rand;
         double Configuration1_Rand;
 
-        ros::Subscriber Sub_Force = nh.subscribe("Topic_Force",1000,&NS_ContinuumRobot::ContinuumRobot::Force_CallBack,this);
+        ros::Subscriber Sub_Force = nh.subscribe("Topic_Force",1,&NS_ContinuumRobot::ContinuumRobot::Force_CallBack,this);
         
         while(Num>0){
             //get random Configuration_Desired            

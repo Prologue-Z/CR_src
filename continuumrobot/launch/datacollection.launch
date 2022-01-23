@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="continuumrobot" type="datacollection_node"     name="continuumrobot_motioncontrol" output="screen" />
+    <node pkg="rs485" type="rs485_node"  name="msg_force_publisher" output="screen" />
+</launch>

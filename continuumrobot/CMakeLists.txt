@@ -25,22 +25,39 @@ link_directories(
   ${catkin_LIB_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_node
-	src/continuumrobot_node.cpp
+##datacollection_node
+add_executable(datacollection_node
+	src/datacollection_node.cpp
 	src/Function_Common.cpp
 	src/Class_Motor.cpp
 	src/Class_USBCAN.cpp
 	src/Class_ContinuumRobot.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(datacollection_node
   ${catkin_LIBRARIES}
   -lpthread
   libECanVci.so.1
   -lusb
 )
-add_dependencies(${PROJECT_NAME}_node 
+add_dependencies(datacollection_node 
    msgs_continuumrobot_generate_messages_cpp
 )
+##debugging_node
+add_executable(debugging_node
+	src/debugging_node.cpp
+	src/Function_Common.cpp
+	src/Class_Motor.cpp
+	src/Class_USBCAN.cpp
+	src/Class_ContinuumRobot.cpp
+)
 
-
+target_link_libraries(debugging_node
+  ${catkin_LIBRARIES}
+  -lpthread
+  libECanVci.so.1
+  -lusb
+)
+add_dependencies(debugging_node
+   msgs_continuumrobot_generate_messages_cpp
+)

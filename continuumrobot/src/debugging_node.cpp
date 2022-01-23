@@ -14,10 +14,9 @@
 #include "ECanVci.h"
 
 #include "continuumrobot/Class_ContinuumRobot.h"
-#include "msgs_continuumrobot/Msg_Force.h"
 
 int main(int argc, char **argv){
-    ros::init(argc, argv, "continuumrobot_node");
+    ros::init(argc, argv, "debugging_node");
     ros::NodeHandle nh; 
 
 	NS_ContinuumRobot::ContinuumRobot CR(nh);
@@ -34,11 +33,13 @@ int main(int argc, char **argv){
 		return 0;
 	}
 	
-	//CR.To0Position();
+	// double C[2] = {PI/3,0};
+	// int T = 10;
+	// int F = 30;
+	// CR.ToConfiguration(C,T,F,0);
+	// sleep(10);
 
-	//data collection control
-	int Num_Data = 300;
-	CR.DataCollection(Num_Data);
+	CR.To0Position();
 
 	return 1;
 }
