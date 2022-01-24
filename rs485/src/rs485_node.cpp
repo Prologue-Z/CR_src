@@ -23,7 +23,7 @@ void MySigintHandler(int sig){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "rs485_node");
-    signal(SIGINT, MySigintHandler);
+    //signal(SIGINT, MySigintHandler);
     ros::NodeHandle nh;
 
     ros::Publisher pub = nh.advertise<msgs_continuumrobot::Msg_Force>("Topic_Force",1);
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
         ForceMsg.F3 = ForceShow[2];
         pub.publish(ForceMsg);
 
-        //ROS_INFO_STREAM("[RS485]F1 = "<<ForceShow[0]<<"N  F2 = "<<ForceShow[1]<<"N  F3 = "<<ForceShow[2]<<"N");
+        ROS_INFO_STREAM("[RS485]F1 = "<<ForceShow[0]<<"N  F2 = "<<ForceShow[1]<<"N  F3 = "<<ForceShow[2]<<"N");
         Collect.sleep();
     }    
     

@@ -42,7 +42,7 @@ int main(int argc, char **argv){
 
 
 	//data collection control
-	int Num_Data = 300;
+	int Num_Data = 3000;
 	CR.DataCollection(Num_Data);
 	
 	return 1;
