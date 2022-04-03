@@ -13,15 +13,8 @@
 
 
 continuumrobot::continuumrobot(){
-<<<<<<< HEAD
-<<<<<<< HEAD
-    char Topic_rivz_Backbone[30];    
-=======
     char Topic_rivz_Backbone[30];
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
-    char Topic_rivz_Backbone[30];
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
+
     for(int i=0;i<this->num_seg;i++){
         sprintf(Topic_rivz_Backbone, "Backbone_%d", i);
         this->Marker_Backbone[i].markers.resize(NUM_MAX_POINTS);
@@ -31,8 +24,7 @@ continuumrobot::continuumrobot(){
 }
 
 void continuumrobot::updataRobot(VectorXd C){
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     this->Configuration = C;    
     if(this->Configuration[0] == 0) Configuration[0]=0.0001;
     if(this->Configuration[1] == 0) Configuration[1]=0.0001;
@@ -45,23 +37,7 @@ void continuumrobot::updataRobot(VectorXd C){
         this->Pub_marker[i].publish(Marker_Backbone[i]);   
         
     }
-    
 
-=======
-=======
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-    this->Configuration = C;
-
-    this->RenewTransformMatrixs();
-    this->RenewShape();
-
-    for(int i=1;i<=this->num_seg;i++){
-        this->Pub_marker[i].publish(Marker_Backbone[i]);
-    }
-<<<<<<< HEAD
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
 }
 
 void continuumrobot::InitMaker(){
@@ -69,15 +45,7 @@ void continuumrobot::InitMaker(){
         for(int j=0;j<NUM_MAX_POINTS;j++){
             
             //名称属性用于区分或后期查看
-<<<<<<< HEAD
-<<<<<<< HEAD
-            this->Marker_Backbone[i].markers[j].header.frame_id = "/Backbone";//这里header更偏向于标题的意义
-=======
             this->Marker_Backbone[i].markers[j].header.frame_id = "Backbone";//这里header更偏向于标题的意义
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
-            this->Marker_Backbone[i].markers[j].header.frame_id = "Backbone";//这里header更偏向于标题的意义
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
             this->Marker_Backbone[i].markers[j].header.stamp = ros::Time::now();
             this->Marker_Backbone[i].markers[j].ns = "base_shape";//工作空间
             this->Marker_Backbone[i].markers[j].id = j;
@@ -121,36 +89,21 @@ void continuumrobot::RenewTransformMatrixs(){
     double psi2 = this->Configuration[3];
     double theta3 = this->Configuration[4];
     double psi3 = this->Configuration[5];
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ROS_INFO_STREAM("start");
-    ROS_INFO_STREAM("T1" << T[1].getOrigin()[0]);
-    ROS_INFO_STREAM("T1" << T[1].getOrigin()[1]);
-    ROS_INFO_STREAM("T1" << T[1].getOrigin()[2]);
-    ROS_INFO_STREAM("T1" << T[1].getOrigin());
-=======
-
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
-
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
+    //ROS_INFO_STREAM("start");
+    //ROS_INFO_STREAM("T1" << T[1].getOrigin()[0]);
+    //ROS_INFO_STREAM("T1" << T[1].getOrigin()[1]);
+    //ROS_INFO_STREAM("T1" << T[1].getOrigin()[2]);
+    //ROS_INFO_STREAM("T1" << T[1].getOrigin());
     this->T[1] = this->GetTransformMatrix(theta1,psi1,this->L[0]);
     this->T[2] = this->GetTransformMatrix(theta2,psi2,this->L[1]);
     this->T[2] = this->T[1]*this->T[2];
     this->T[3] = this->GetTransformMatrix(theta3,psi3,this->L[2]);
     this->T[3] = this->T[2]*this->T[3];
-<<<<<<< HEAD
-<<<<<<< HEAD
     //ROS_INFO_STREAM("T1" << T[1].getOrigin()[0]);
     //ROS_INFO_STREAM("T1" << T[1].getOrigin()[1]);
     //ROS_INFO_STREAM("T1" << T[1].getOrigin()[2]);
     //ROS_INFO_STREAM("T1" << T[1].getOrigin());
     //ROS_INFO_STREAM("end");//?????
-    
-=======
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
 
 }
 
@@ -159,8 +112,6 @@ tf::Transform continuumrobot::GetTransformMatrix(double theta,double psi,double 
     double R = L/theta;
 
     T_Temp.setRotation(tf::createQuaternionFromRPY(0,0,psi));
-<<<<<<< HEAD
-<<<<<<< HEAD
     T_Temp.setOrigin(tf::Vector3(0,0,0));
     T *= T_Temp;
     T_Temp.setRotation(tf::createQuaternionFromRPY(0,0,0));
@@ -170,16 +121,6 @@ tf::Transform continuumrobot::GetTransformMatrix(double theta,double psi,double 
     T_Temp.setOrigin(tf::Vector3(0,0,0));
     T *= T_Temp;
     T_Temp.setRotation(tf::createQuaternionFromRPY(0,0,0));
-=======
-    T_Temp.setOrigin(tf::Vector3(R,0,0));
-    T *= T_Temp;
-    T_Temp.setRotation(tf::createQuaternionFromRPY(0,theta,0));
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
-    T_Temp.setOrigin(tf::Vector3(R,0,0));
-    T *= T_Temp;
-    T_Temp.setRotation(tf::createQuaternionFromRPY(0,theta,0));
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
     T_Temp.setOrigin(tf::Vector3(-R,0,0));
     T *= T_Temp;
     T_Temp.setRotation(tf::createQuaternionFromRPY(0,0,-psi));
@@ -190,8 +131,6 @@ tf::Transform continuumrobot::GetTransformMatrix(double theta,double psi,double 
 }
 
 void continuumrobot::RenewShape(){
-<<<<<<< HEAD
-<<<<<<< HEAD
     tf::Transform T_Temp;
     T_Temp.setIdentity();
     for(int i=1;i<=this->num_seg;i++){
@@ -211,24 +150,6 @@ void continuumrobot::RenewShape(){
             this->Marker_Backbone[i-1].markers[j].pose.position.y = T_Temp.getOrigin()[1];
             this->Marker_Backbone[i-1].markers[j].pose.position.z = T_Temp.getOrigin()[2];
             //ROS_INFO_STREAM("position = " << this->Marker_Backbone[i-1].markers[j].pose.position);
-=======
-=======
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-    tf::Vector3 Points;
-    tf::Transform T_Temp;
-
-    for(int i=1;i<=this->num_seg;i++){
-        for(int j=0;j<NUM_MAX_POINTS;j++){
-            T_Temp = T[i];
-            T_Temp = T_Temp*this->GetTransformMatrix(this->Configuration[2*i-1]/NUM_MAX_POINTS*j,this->Configuration[2*i],this->L[i-1]/NUM_MAX_POINTS*j);
-            
-            this->Marker_Backbone[i-1].markers[j].pose.position.x = T_Temp.getOrigin()[0];
-            this->Marker_Backbone[i-1].markers[j].pose.position.y = T_Temp.getOrigin()[1];
-            this->Marker_Backbone[i-1].markers[j].pose.position.z = T_Temp.getOrigin()[2];
-<<<<<<< HEAD
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
-=======
->>>>>>> 2aec18ad65fae7e22d5289fc34666672d062741a
         }
     }
 }
