@@ -1,0 +1,12 @@
+structure:
+
+  length_backbone: 
+  -0.28
+  -0.28
+  -0.28
+
+rviz:
+
+  frequency_refresh:10
+
+

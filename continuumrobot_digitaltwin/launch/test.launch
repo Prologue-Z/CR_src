@@ -1,0 +1,7 @@
+<launch>
+    <rosparam file="$(find continuumrobot_digitaltwin)/config/continuumrobot.yaml" command="load" />
+
+    <node name="node_Draw"          pkg="continuumrobot_digitaltwin" type="node_Draw"          output="screen"/>
+    <node name="node_TfBroadcaster" pkg="continuumrobot_digitaltwin" type="node_TfBroadcaster" output="screen"/>
+
+</launch>
