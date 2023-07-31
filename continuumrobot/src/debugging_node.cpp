@@ -40,6 +40,7 @@ int main(int argc, char **argv){
 	// sleep(10);
 
 	CR.To0Position();
+	//test
 
 	return 1;
 }
